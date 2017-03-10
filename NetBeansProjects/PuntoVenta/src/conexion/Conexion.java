@@ -21,9 +21,14 @@ public class Conexion {
     //private final String password = "somosinco";
     //private final String url = "jdbc:mysql://db4free.net:3306/streetcode_java";
     
-    private final String user = "root";
+    //private final String user = "root";
+    //private final String password = "momantai";
+    //private final String url = "jdbc:mysql://localhost:3306/PruebaBD";
+    
+    private final String user = "133991";
     private final String password = "momantai";
-    private final String url = "jdbc:mysql://localhost:3306/PruebaBD";
+    private final String url = "jdbc:mysql://mysql2.paris1.alwaysdata.com:3306/momantaiter_streetcode";
+    
     private Connection con = null;
     
     public Connection conectar(){
@@ -45,14 +50,14 @@ public class Conexion {
         
         try{
             System.out.println("salto");
-            String sql = "SELECT * FROM Users WHERE user = '" + ID + "' AND password = '"+ contra +"';";
+            String sql = "SELECT * FROM users WHERE user = '" + ID + "' AND password = '"+ contra +"';";
             conectar();
             Statement statement= conectar().createStatement();
             
             ResultSet result= (ResultSet) statement.executeQuery(sql);
             
             if(result.next()){
-                valido = result.getInt("mod");
+                valido = result.getInt("permisos");
             }
             System.out.println("Se conecto correctamente");
         } catch(Exception e){
