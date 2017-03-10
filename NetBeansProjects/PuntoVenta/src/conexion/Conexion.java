@@ -17,18 +17,22 @@ import java.sql.Statement;
  * @author momantai
  */
 public class Conexion {
-    private final String user = "streetcode";
-    private final String password = "somosinco";
-    private final String url = "jdbc:mysql://db4free.net:3306/streetcode_java";
+    //private final String user = "streetcode";
+    //private final String password = "somosinco";
+    //private final String url = "jdbc:mysql://db4free.net:3306/streetcode_java";
+    
+    private final String user = "root";
+    private final String password = "momantai";
+    private final String url = "jdbc:mysql://localhost:3306/PruebaBD";
     private Connection con = null;
     
-     public Connection conectar(){
-        try{
+    public Connection conectar(){
+        try {
             Class.forName("com.mysql.jdbc.Driver");
-            con =(Connection)DriverManager.getConnection(url,user,password);
+            con =(Connection)DriverManager.getConnection(url, user, password);
             System.out.println("Se conecto correctamente");
-        } catch(ClassNotFoundException | SQLException e){
-            System.out.println("Error en la conexion"+e);
+        } catch(ClassNotFoundException | SQLException e) {
+            System.out.println("Error en la conexion" + e);
         }
         return con;
     }
@@ -38,18 +42,21 @@ public class Conexion {
         String ID = login.getID();
         String contra = login.getPassword();
         int valido=0;
+        
         try{
-            String sql="SELECT idempleados FROM proyecto_javita.empleados where idEmpleados="+ID;
+            System.out.println("salto");
+            String sql = "SELECT * FROM Users WHERE user = '" + ID + "' AND password = '"+ contra +"';";
             conectar();
-            Statement statement= con.createStatement();
+            Statement statement= conectar().createStatement();
             
-            ResultSet result=statement.executeQuery(sql);
-            if(result!=null){
-                
+            ResultSet result= (ResultSet) statement.executeQuery(sql);
+            
+            if(result.next()){
+                valido = result.getInt("mod");
             }
             System.out.println("Se conecto correctamente");
         } catch(Exception e){
-            System.out.println("Error en la conexion "+e);
+            System.out.println("Error en la conexion aqui " + e);
         }
         return valido;
     }
