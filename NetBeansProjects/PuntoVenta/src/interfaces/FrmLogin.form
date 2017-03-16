@@ -39,9 +39,7 @@
                   <Component id="txtUsuario" pref="115" max="32767" attributes="0"/>
                   <Component id="txtPass" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="lblUserAct" min="-2" pref="84" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <EmptySpace pref="118" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -59,10 +57,7 @@
                   <Component id="txtPass" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnEntrar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblUserAct" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="btnEntrar" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -90,11 +85,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtPass">
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblUserAct">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="user"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

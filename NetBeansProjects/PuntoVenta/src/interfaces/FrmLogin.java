@@ -1,7 +1,13 @@
-
+/*AREA DE IDENTIFICACIÓN*/
 package interfaces;
 import entidades.Login;
 import conexion.Conexion;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 /**
  *
  * @author momantai
@@ -15,6 +21,8 @@ public class FrmLogin extends javax.swing.JFrame {
         initComponents();
     }
 
+    FrmPanel panel = new FrmPanel();
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,7 +37,6 @@ public class FrmLogin extends javax.swing.JFrame {
         txtUsuario = new javax.swing.JTextField();
         btnEntrar = new javax.swing.JButton();
         txtPass = new javax.swing.JPasswordField();
-        lblUserAct = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(0, 0));
@@ -46,8 +53,6 @@ public class FrmLogin extends javax.swing.JFrame {
             }
         });
 
-        lblUserAct.setText("user");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -62,9 +67,7 @@ public class FrmLogin extends javax.swing.JFrame {
                     .addComponent(btnEntrar)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                     .addComponent(txtPass))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblUserAct, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -78,15 +81,13 @@ public class FrmLogin extends javax.swing.JFrame {
                     .addComponent(lblPass)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEntrar)
-                    .addComponent(lblUserAct))
+                .addComponent(btnEntrar)
                 .addGap(45, 45, 45))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         Login credenciales = new Login();
         Conexion comprobarCredenciales = new Conexion();
@@ -99,13 +100,20 @@ public class FrmLogin extends javax.swing.JFrame {
         int resultado = comprobarCredenciales.validar(credenciales);
         
         if(resultado==111){
-            lblUserAct.setText("Admin");
+            panel.setLocationRelativeTo(null);
+            panel.setVisible(true);
+            this.dispose();
         } else if (resultado==110) {
-            lblUserAct.setText("Moderador");
+            panel.setLocationRelativeTo(null);
+            panel.moderador();
+            panel.setVisible(true);
+            this.dispose();
         } else if (resultado==101) {
-            lblUserAct.setText("Usuario");
+            panel.setLocationRelativeTo(null);
+            panel.setVisible(true);
+            this.dispose();
         } else {
-            lblUserAct.setText("Incorrecto");
+            JOptionPane.showMessageDialog(rootPane, "Usuario o Contraseña Inconrrectos");
         }
         
         System.out.println(resultado);
@@ -141,7 +149,9 @@ public class FrmLogin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmLogin().setVisible(true);
+                FrmLogin Login = new FrmLogin();
+                Login.setLocationRelativeTo(null);
+                Login.setVisible(true);
             }
         });
     }
@@ -149,7 +159,6 @@ public class FrmLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel lblPass;
-    private javax.swing.JLabel lblUserAct;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUsuario;
