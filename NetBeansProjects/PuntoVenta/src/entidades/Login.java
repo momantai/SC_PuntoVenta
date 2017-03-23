@@ -5,10 +5,8 @@
  */
 package entidades;
 
-/**
- *
- * @author momantai
- */
+/*En esta clase se guardaran temporalmente los datos de la interfaz FrmLogin para 
+recuperarlos posteriormente, las variables seran privadas y se accederan por metodos*/
 public class Login {
     private String ID = null;
     private String password = null;

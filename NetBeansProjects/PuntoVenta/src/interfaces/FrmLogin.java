@@ -21,7 +21,7 @@ public class FrmLogin extends javax.swing.JFrame {
         initComponents();
     }
 
-    FrmPanel panel = new FrmPanel();
+    FrmPanel panel = new FrmPanel();// se crea un objeto de la interfaz Frmpanel
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,16 +89,26 @@ public class FrmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        Login credenciales = new Login();
-        Conexion comprobarCredenciales = new Conexion();
+        Login credenciales = new Login(); //se crea un nuevo objeto de la clase Login con el nombre credenciales
+        Conexion comprobarCredenciales = new Conexion();//Se crea un nuevo objeto de la clase conexion con el nombre de comprobarcredenciales
         
+        /*Se recupera lo escrito en los Jtextfield txUsuario y txtPass, se mandan a la clase
+        login con el objeto "credenciales" (La clase Login guardara los datos temporalmente
+        con variables privadas y se accederan a ellas con metodos)*/
         credenciales.setID(txtUsuario.getText());
         credenciales.setPassword(txtPass.getText());
+        
+        /*Se limpian los campos txtusuario y txtPass de la interfaz*/
         txtUsuario.setText("");
         txtPass.setText("");
         
+        /*Se manda el objeto "credenciales" y sus variables a la clase conexion con 
+        el objeto "comprobarCredenciales" y se retornara un valor tipo INT*/
         int resultado = comprobarCredenciales.validar(credenciales);
         
+        /*Se evalua el tipo de permiso que se retorno en el objeto metodo "validar" 
+        para abrir la interfaz FrmPanel y decidir que botones estaran disponibles para
+        el uso de los diferentes usuarios.*/
         if(resultado==111){
             panel.setLocationRelativeTo(null);
             panel.setVisible(true);
