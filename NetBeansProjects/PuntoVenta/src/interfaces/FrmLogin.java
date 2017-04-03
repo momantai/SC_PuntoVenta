@@ -14,11 +14,14 @@ import javax.swing.KeyStroke;
  */
 public class FrmLogin extends javax.swing.JFrame {
 
+    //Creacion de variable de instancia para realizar conexion
+    private Conexion comprobarCredenciales = new Conexion();
     /**
      * Creates new form FrmLogin
      */
     public FrmLogin() {
         initComponents();
+        comprobarCredenciales.conectar();
     }
 
     FrmPanel panel = new FrmPanel();// se crea un objeto de la interfaz Frmpanel
@@ -90,8 +93,6 @@ public class FrmLogin extends javax.swing.JFrame {
     
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         Login credenciales = new Login(); //se crea un nuevo objeto de la clase Login con el nombre credenciales
-        Conexion comprobarCredenciales = new Conexion();//Se crea un nuevo objeto de la clase conexion con el nombre de comprobarcredenciales
-        
         /*Se recupera lo escrito en los Jtextfield txUsuario y txtPass, se mandan a la clase
         login con el objeto "credenciales" (La clase Login guardara los datos temporalmente
         con variables privadas y se accederan a ellas con metodos)*/

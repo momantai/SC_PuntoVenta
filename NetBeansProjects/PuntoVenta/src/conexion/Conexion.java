@@ -71,10 +71,40 @@ public class Conexion {
         }
         return valido;//Se retorna la variable "valido" con el respectivo valor que se igualo
     }
-    
-    public static void main(String[] args) {
-        Conexion a = new Conexion();
-        a.conectar();
+     
+    /*
+        Metodo para hacer la conexion llenar la tabla de productos
+    */
+    public ResultSet datosProductos(){
+        ResultSet obtener = null;
+        
+        try{
+            System.out.println("salto");
+            String sql = "SELECT * FROM productos";
+            Statement statement = conectar().createStatement();    
+            obtener=(ResultSet) statement.executeQuery(sql);
+        
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obtener;
     }
     
+    /*
+        Metodo para llenar la tabla con filtro
+    */
+    public ResultSet datosProductosFilt(String dato){
+        ResultSet obtener=null;
+        
+        try{
+            System.out.println("salto");
+            String sql = "SELECT * FROM productos WHERE idProducto LIKE '%"+dato+"%' OR descripcion LIKE '%"+dato+"%'";
+            Statement statement = conectar().createStatement();
+            obtener=(ResultSet) statement.executeQuery(sql);
+        
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obtener;
+    }
 }
