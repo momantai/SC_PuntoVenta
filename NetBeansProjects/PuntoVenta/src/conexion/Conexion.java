@@ -80,7 +80,7 @@ public class Conexion {
         
         try{
             System.out.println("salto");
-            String sql = "SELECT * FROM productos";
+            String sql = "SELECT idProducto, descripcion, clasificacion.clasificacion, precio, activo FROM productos INNER JOIN clasificacion ON productos.clasificacion=clasificacion.idClasificacion";
             Statement statement = conectar().createStatement();    
             obtener=(ResultSet) statement.executeQuery(sql);
         
@@ -102,6 +102,24 @@ public class Conexion {
             Statement statement = conectar().createStatement();
             obtener=(ResultSet) statement.executeQuery(sql);
         
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obtener;
+    }
+    
+    /*
+        Metodo para llenar el combobox de clasificaciones
+    */
+    public ResultSet datosClasificacion(){
+        ResultSet obtener = null;
+        
+        try{
+            System.out.println("salto");
+            String sql = "SELECT clasificacion FROM clasificacion";
+            Statement statement = conectar().createStatement();
+            obtener=(ResultSet) statement.executeQuery(sql);
+            System.out.println("chido");
         } catch(SQLException e){
             System.out.println("Error en la conexion "+e);
         }

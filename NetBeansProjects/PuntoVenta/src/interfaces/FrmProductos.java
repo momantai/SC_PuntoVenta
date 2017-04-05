@@ -35,6 +35,8 @@ public class FrmProductos extends javax.swing.JFrame {
         if(modelo.getColumnCount()==0){
             modelo.addColumn("Codigo");
             modelo.addColumn("Descripción");
+            modelo.addColumn("Clasificación");
+            modelo.addColumn("Precio");
             modelo.addColumn("Activo");
         }
         
@@ -50,12 +52,19 @@ public class FrmProductos extends javax.swing.JFrame {
         try{
             ResultSet obtener = cone.datosProductos();
             if(obtener!=null){
-            String datos[] = new String[3];
+            String datos[] = new String[5];
                 while(obtener.next()){
                     datos[0]=obtener.getString(1);
                     datos[1]=obtener.getString(2);
                     datos[2]=obtener.getString(3);
-                
+                    datos[3]=obtener.getString(4);
+                    datos[4]=obtener.getString(5);
+                    
+                    if(datos[4].equals("0")){
+                        datos[4]="No";
+                    } else{
+                        datos[4]="Si";
+                    }
                     modelo.addRow(datos);
                 }
             }
