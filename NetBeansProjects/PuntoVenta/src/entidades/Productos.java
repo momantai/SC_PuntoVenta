@@ -16,6 +16,7 @@ public class Productos {
     private int clasificacion;
     private float precio;
     private int activo;
+    private String imagen;
     
     public void datosProductos(int code, String description, int clasific, int price, int active){
         codigo = code;
@@ -93,6 +94,20 @@ public class Productos {
      */
     public void setActivo(int activo) {
         this.activo = activo;
+    }
+
+    /**
+     * @return the imagen
+     */
+    public String getImagen() {
+        return imagen;
+    }
+
+    /**
+     * @param imagen the imagen to set
+     */
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
     
 }

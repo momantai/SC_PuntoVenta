@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaces;
+package interfaces.productos;
 
 import conexion.Conexion;
+import interfaces.FrmPanel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
@@ -73,6 +74,7 @@ public class FrmProductos extends javax.swing.JFrame {
             System.out.println("Error al mostrar los datos"+e);
         }
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

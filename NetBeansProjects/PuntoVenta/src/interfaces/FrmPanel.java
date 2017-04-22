@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import interfaces.productos.FrmProductos;
+
 /**
  *
  * @author momantai
