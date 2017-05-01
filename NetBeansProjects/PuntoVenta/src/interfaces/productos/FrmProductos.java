@@ -6,9 +6,11 @@
 package interfaces.productos;
 
 import conexion.Conexion;
+import conexion.Control;
 import interfaces.FrmPanel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,6 +23,7 @@ public class FrmProductos extends javax.swing.JFrame {
      * Creates new form FrmProductos
      */
     private Conexion cone = new Conexion();
+    private Control contro = new Control();
     private DefaultTableModel modelo= new DefaultTableModel();
     
     public FrmProductos() {
@@ -97,10 +100,25 @@ public class FrmProductos extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -120,9 +138,14 @@ public class FrmProductos extends javax.swing.JFrame {
 
             }
         ));
+        tblProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tblProductos.setRowSelectionAllowed(true);
         jScrollPane1.setViewportView(tblProductos);
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyTyped(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarKeyReleased(evt);
             }
@@ -186,12 +209,19 @@ public class FrmProductos extends javax.swing.JFrame {
         try{
             ResultSet obtener = cone.datosProductosFilt(txtBuscar.getText());
             if(obtener!=null){
-            String datos[] = new String[3];
+            String datos[] = new String[5];
                 while(obtener.next()){
                     datos[0]=obtener.getString(1);
                     datos[1]=obtener.getString(2);
                     datos[2]=obtener.getString(3);
-                
+                    datos[3]=obtener.getString(4);
+                    datos[4]=obtener.getString(5);
+                    
+                    if(datos[4].equals("0")){
+                        datos[4]="No";
+                    } else{
+                        datos[4]="Si";
+                    }
                     modelo.addRow(datos);
                 }
             }
@@ -207,9 +237,49 @@ public class FrmProductos extends javax.swing.JFrame {
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        FrmPanel panel = new FrmPanel();
+        FrmPanel panel= new FrmPanel();
+        panel.setLocationRelativeTo(null);
         panel.setVisible(true);
     }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarKeyTyped
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        DialNuevoProducto nuevo = new DialNuevoProducto(this,true);
+        nuevo.setVisible(true);
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        if(tblProductos.getSelectedRow()>-1){
+            DialNuevoProducto modi = new DialNuevoProducto(this, true);
+            modi.setBoton("Modificar");
+            modi.darDatos((String) tblProductos.getValueAt(tblProductos.getSelectedRow(), 0));
+            modi.setVisible(true);
+        } else{
+            JOptionPane.showMessageDialog(this, "Selecciona Una Fila Para Editar");
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        if(tblProductos.getSelectedRow()>-1){
+            if(JOptionPane.showConfirmDialog(this, "Esta Seguro que Quiere Borrar este Producto")==0){
+                if(contro.borrarProducto((String) tblProductos.getValueAt(tblProductos.getSelectedRow(), 0))==1){
+                    JOptionPane.showMessageDialog(this, "Exito al Borrar");
+                    mostrarDatos();
+                    } else{
+                    JOptionPane.showMessageDialog(this, "Error al Borrar");
+                }
+            }
+            
+        } else{
+            JOptionPane.showMessageDialog(this, "Selecciona un Producto para Borrarlo");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments

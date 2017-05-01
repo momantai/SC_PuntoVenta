@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) {        
         //Creacion de la instancia del login y llamado del mismo
         FrmLogin login = new FrmLogin();
+        login.setLocationRelativeTo(null);
         login.setVisible(true);
         
     }

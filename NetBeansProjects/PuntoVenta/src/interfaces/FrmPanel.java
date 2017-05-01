@@ -194,6 +194,7 @@ public class FrmPanel extends javax.swing.JFrame {
         // TODO add your handling code here:
         FrmProductos productos = new FrmProductos();
         productos.setVisible(true);
+        productos.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnProductosActionPerformed
 

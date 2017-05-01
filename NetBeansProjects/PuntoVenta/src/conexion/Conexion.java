@@ -54,8 +54,8 @@ public class Conexion {
         try{//Se hace la consulta de el usuario y la contraseña en la base de datos
             System.out.println("salto");
             String sql = "SELECT * FROM users WHERE user = '" + ID + "' AND password = '"+ contra +"';";
-            conectar();//Se conecta a la base de datos
-            Statement statement= conectar().createStatement();
+            con=conectar();//Se conecta a la base de datos
+            Statement statement= con.createStatement();
             
             /*Se utiliza ResultSet para acceder a los datos de las columnas y filas de la base de datos.
             Se crea un ubjeto llamado "result"*/
@@ -98,8 +98,25 @@ public class Conexion {
         
         try{
             System.out.println("salto");
-            String sql = "SELECT * FROM productos WHERE idProducto LIKE '%"+dato+"%' OR descripcion LIKE '%"+dato+"%'";
-            Statement statement = conectar().createStatement();
+            String sql = "SELECT idProducto, descripcion, clasificacion.clasificacion, precio, activo FROM productos INNER JOIN clasificacion ON productos.clasificacion=clasificacion.idClasificacion WHERE idProducto LIKE '"+dato+"%' OR descripcion LIKE '%"+dato+"%'";
+            
+            Statement statement = con.createStatement();
+            obtener=(ResultSet) statement.executeQuery(sql);
+        
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obtener;
+    }
+    
+    public ResultSet darUnValor(String dato){
+        ResultSet obtener=null;
+        
+        try{
+            System.out.println("salto");
+            String sql = "SELECT descripcion, clasificacion, precio, activo FROM productos WHERE idProducto="+dato;
+            
+            Statement statement = con.createStatement();
             obtener=(ResultSet) statement.executeQuery(sql);
         
         } catch(SQLException e){
