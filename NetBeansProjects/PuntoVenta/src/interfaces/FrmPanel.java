@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import interfaces.empleados.FrmEmpleados;
 import interfaces.productos.FrmProductos;
 
 /**
@@ -13,11 +14,20 @@ import interfaces.productos.FrmProductos;
  */
 public class FrmPanel extends javax.swing.JFrame {
 
+    private int permiso;
     /**
      * Creates new form FrmPanel
      */
     public FrmPanel() {
         initComponents();
+
+    }
+    public void setPermiso(int permiso) {
+        this.permiso = permiso;
+    }
+    
+    public int getPermiso(){
+        return permiso;
     }
     
     public void moderador(){
@@ -77,6 +87,11 @@ public class FrmPanel extends javax.swing.JFrame {
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/clientes.png"))); // NOI18N
 
         btnEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/empleados.png"))); // NOI18N
+        btnEmpleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmpleadosActionPerformed(evt);
+            }
+        });
 
         btnProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/proveedores.png"))); // NOI18N
 
@@ -198,6 +213,14 @@ public class FrmPanel extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnProductosActionPerformed
 
+    private void btnEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadosActionPerformed
+        // TODO add your handling code here:
+        FrmEmpleados empleados= new FrmEmpleados();
+        empleados.mostrarDatos(permiso);
+        empleados.setPermiso(getPermiso());
+        empleados.setVisible(true);
+    }//GEN-LAST:event_btnEmpleadosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -251,4 +274,5 @@ public class FrmPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     // End of variables declaration//GEN-END:variables
+
 }

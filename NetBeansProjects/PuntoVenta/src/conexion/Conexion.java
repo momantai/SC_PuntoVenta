@@ -142,4 +142,19 @@ public class Conexion {
         }
         return obtener;
     }
+    
+    public ResultSet mostrarEmpleados(){
+        ResultSet obtener=null;
+        
+        try{
+            System.out.println("Salto");
+            String sql = "SELECT idEmpleado, nombreE, apellidosE, users.user, permisos FROM empleado INNER JOIN users ON empleado.user=users.idUser";
+            Statement stat = conectar().createStatement();
+            obtener=(ResultSet) stat.executeQuery(sql);
+            System.out.println("chido");
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obtener;
+    }
 }

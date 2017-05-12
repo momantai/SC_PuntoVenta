@@ -16,6 +16,5 @@ public class Main {
         FrmLogin login = new FrmLogin();
         login.setLocationRelativeTo(null);
         login.setVisible(true);
-        
     }
 }

@@ -139,7 +139,8 @@ public class FrmProductos extends javax.swing.JFrame {
             }
         ));
         tblProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tblProductos.setRowSelectionAllowed(true);
+        tblProductos.setFocusable(false);
+        tblProductos.setRequestFocusEnabled(false);
         jScrollPane1.setViewportView(tblProductos);
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
