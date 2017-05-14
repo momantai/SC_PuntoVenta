@@ -12,7 +12,7 @@ package entidades;
 public class Empleado {
     private String nombre;
     private String apellidos;
-    private String edad;
+    private int edad;
     private String puesto;
     private String telefono;
 
@@ -47,14 +47,14 @@ public class Empleado {
     /**
      * @return the edad
      */
-    public String getEdad() {
+    public int getEdad() {
         return edad;
     }
 
     /**
      * @param edad the edad to set
      */
-    public void setEdad(String edad) {
+    public void setEdad(int edad) {
         this.edad = edad;
     }
 

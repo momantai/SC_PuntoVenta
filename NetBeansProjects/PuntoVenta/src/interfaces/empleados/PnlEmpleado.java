@@ -124,6 +124,7 @@ public class PnlEmpleado extends javax.swing.JPanel {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnModificarActionPerformed
 
 

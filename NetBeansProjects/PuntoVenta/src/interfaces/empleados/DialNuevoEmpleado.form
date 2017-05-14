@@ -27,7 +27,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jPanel1" max="32767" attributes="0"/>
+                      <Component id="pnlPanel" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -46,7 +46,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <Component id="pnlPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -59,7 +59,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="pnlPanel">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -112,7 +112,7 @@
                                       <Component id="txtApellidos" min="-2" pref="209" max="-2" attributes="0"/>
                                       <Component id="txtNombre" min="-2" pref="209" max="-2" attributes="0"/>
                                       <Component id="txtEdad" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
-                                      <Component id="cmbxPuesto" alignment="0" min="-2" pref="82" max="-2" attributes="0"/>
+                                      <Component id="cmbxPuesto" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -221,27 +221,27 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nombre:"/>
+            <Property name="text" type="java.lang.String" value="*Nombre:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Apellidos:"/>
+            <Property name="text" type="java.lang.String" value="*Apellidos:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Edad:"/>
+            <Property name="text" type="java.lang.String" value="*Edad:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Puesto:"/>
+            <Property name="text" type="java.lang.String" value="*Puesto:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tel&#xe9;fono:"/>
+            <Property name="text" type="java.lang.String" value="*Tel&#xe9;fono:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator1">
@@ -270,17 +270,17 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Usuario:"/>
+            <Property name="text" type="java.lang.String" value="*Usuario:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Contrase&#xf1;a:"/>
+            <Property name="text" type="java.lang.String" value="*Contrase&#xf1;a:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Confirmar:"/>
+            <Property name="text" type="java.lang.String" value="*Confirmar:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
@@ -293,12 +293,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel12">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Calle:"/>
+            <Property name="text" type="java.lang.String" value="*Calle:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Num Ext:"/>
+            <Property name="text" type="java.lang.String" value="*Num Ext:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">
@@ -308,35 +308,55 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel15">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Colonia:"/>
+            <Property name="text" type="java.lang.String" value="*Colonia:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNombre">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNombreFocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNombreKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtApellidos">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtApellidosActionPerformed"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtApellidosFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtApellidosKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtEdad">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtEdadFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtEdadKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCalle">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCalleFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCalleKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNumEx">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNumExActionPerformed"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNumExFocusLost"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNumIn">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNumInFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtColonia">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtColoniaFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtColoniaKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTelefono">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTelefonoActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTelefonoKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtUsuario">
@@ -351,9 +371,10 @@
         <Component class="javax.swing.JComboBox" name="cmbxPuesto">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
-                <StringItem index="0" value="JEFE"/>
-                <StringItem index="1" value="EMPLEADO"/>
+              <StringArray count="3">
+                <StringItem index="0" value="--SELECCIONE--"/>
+                <StringItem index="1" value="JEFE"/>
+                <StringItem index="2" value="EMPLEADO"/>
               </StringArray>
             </Property>
           </Properties>
@@ -364,11 +385,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Agregar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnLimpiar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Limpiar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimpiarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>

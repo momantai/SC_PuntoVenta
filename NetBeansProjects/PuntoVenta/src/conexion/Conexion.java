@@ -98,7 +98,7 @@ public class Conexion {
         
         try{
             System.out.println("salto");
-            String sql = "SELECT idProducto, descripcion, clasificacion.clasificacion, precio, activo FROM productos INNER JOIN clasificacion ON productos.clasificacion=clasificacion.idClasificacion WHERE idProducto LIKE '"+dato+"%' OR descripcion LIKE '%"+dato+"%'";
+            String sql = "SELECT idProducto, descripcion, clasificacion.clasificacion, precio, activo FROM productos INNER JOIN clasificacion ON productos.clasificacion=clasificacion.idClasificacion WHERE idProducto  LIKE '"+dato+"%' OR descripcion LIKE '%"+dato+"%'";
             
             Statement statement = con.createStatement();
             obtener=(ResultSet) statement.executeQuery(sql);
