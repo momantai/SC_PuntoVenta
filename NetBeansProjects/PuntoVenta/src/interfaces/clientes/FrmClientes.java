@@ -8,11 +8,13 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import javax.swing.table.DefaultTableModel;
 import conexion.Conexion;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author momantai
@@ -24,7 +26,7 @@ public class FrmClientes extends javax.swing.JFrame {
      */
     public FrmClientes() {
         initComponents();
-        //modeloTabla();
+        this.setTitle("Clientes");
         consultas();
     }
     
@@ -98,6 +100,11 @@ public class FrmClientes extends javax.swing.JFrame {
         lblTel.setText(" ");
 
         jButton1.setText("Agregar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Editar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -107,6 +114,11 @@ public class FrmClientes extends javax.swing.JFrame {
         });
 
         jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,36 +204,82 @@ public class FrmClientes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private int id = 0;
+    private String [] datospasar = new String[10];
     private void tblDatosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDatosMousePressed
         int row = tblDatos.getSelectedRow();
         
-        lblNombre.setText(tblDatos.getValueAt(row, 1).toString());
-        lblApellidos.setText(tblDatos.getValueAt(row, 2).toString() + " " + tblDatos.getValueAt(row, 3).toString());
-        lblTel.setText(tblDatos.getValueAt(row, 4).toString());
-        lblDebe.setText(tblDatos.getValueAt(row, 5).toString());
-        lblFecha.setText(tblDatos.getValueAt(row, 6).toString());
+        String[] data = new String[10];
+        data[0] = tblDatos.getValueAt(row, 1).toString();
+        data[1] = tblDatos.getValueAt(row, 2).toString();
+        data[2] = tblDatos.getValueAt(row, 3).toString();
+        data[3] = tblDatos.getValueAt(row, 4).toString();
+        data[4] = tblDatos.getValueAt(row, 5).toString();
+        data[5] = tblDatos.getValueAt(row, 6).toString();
+        data[6] = tblDatos.getValueAt(row, 7).toString();
+        data[7] = tblDatos.getValueAt(row, 8).toString();
+        data[8] = tblDatos.getValueAt(row, 9).toString();
+        
+        
+        lblNombre.setText(data[0]);
+        lblApellidos.setText(data[1] + " " + data[2]);
+        lblTel.setText(data[3]);
+        lblDebe.setText(data[4]);
+        lblFecha.setText(data[5]);
         
         id = Integer.parseInt(tblDatos.getValueAt(row, 0).toString());
         System.out.println("id: " + id);
+        
+        datospasar = data;
     }//GEN-LAST:event_tblDatosMousePressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         DialClientes clientes = new DialClientes(id);
-        if(id!=0)
+        if(id!=0){
+            clientes.llenardatos(datospasar);
             clientes.setVisible(true);
+        }
         else
             JOptionPane.showMessageDialog(rootPane, "Seleccione un cliente.");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DialClientes clientes = new DialClientes();
+        clientes.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        float a;
+        String delete = "DELETE FROM clientes WHERE idCliente = " + id;
+        Connection con = new Conexion().conectar();
+        PreparedStatement stmt;
+        
+        if(id!=0){
+            a = Float.parseFloat(lblDebe.getText());
+            if (a == 0){
+                
+                try {
+                    stmt = con.prepareStatement(delete);
+                    stmt.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(FrmClientes.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(rootPane, "El usuario se ha eliminado.");
+                consultas();
+            } else 
+                JOptionPane.showMessageDialog(rootPane, "El usuario no se puede eliminar hasta que pague su adeudo.");
+        } else
+            JOptionPane.showMessageDialog(rootPane, "Seleccione un cliente.");
+    }//GEN-LAST:event_jButton3ActionPerformed
     
     public void consultas(){
         Connection con = new Conexion().conectar();
-        String[] nColumns = {"id", "Nombre", "Apellido P.", "Apellido M.", "Telefono", "Saldo", "Fecha" };
-        String query = "SELECT idCliente, nombre, apepatC, apematC, telefonoC, saldo, fechaAlta FROM clientes;";
+        String[] nColumns = {"id", "Nombre", "Apellido P.", "Apellido M.", "Telefono", "Saldo", "Fecha", "RFC", "Domicilio", "Correo" };
+        String query = "SELECT idCliente, nombre, apepatC, apematC, telefonoC, saldo, fechaAlta, rfc, Domicilio, correo FROM clientes;";
         DefaultTableModel m = new DefaultTableModel(null, nColumns){
             public boolean isCellEditable(int rowIndex,int columnIndex){return false;}
         };
         
-        String datos[] = new String[7];
+        String datos[] = new String[10];
         
         try {
             Statement sta = (Statement) con.createStatement();
@@ -235,6 +293,9 @@ public class FrmClientes extends javax.swing.JFrame {
                 datos[4] = r.getString(5);
                 datos[5] = r.getString(6);
                 datos[6] = r.getString(7);
+                datos[7] = r.getString(8);
+                datos[8] = r.getString(9);
+                datos[9] = r.getString(10);
                 
                 m.addRow(datos);
             }
@@ -249,6 +310,15 @@ public class FrmClientes extends javax.swing.JFrame {
         tblDatos.getColumnModel().getColumn(5).setMaxWidth(0);
         tblDatos.getColumnModel().getColumn(5).setMinWidth(0);
         tblDatos.getColumnModel().getColumn(5).setPreferredWidth(0);
+        tblDatos.getColumnModel().getColumn(7).setMaxWidth(0);
+        tblDatos.getColumnModel().getColumn(7).setMinWidth(0);
+        tblDatos.getColumnModel().getColumn(7).setPreferredWidth(0);
+        tblDatos.getColumnModel().getColumn(8).setMaxWidth(0);
+        tblDatos.getColumnModel().getColumn(8).setMinWidth(0);
+        tblDatos.getColumnModel().getColumn(8).setPreferredWidth(0);
+        tblDatos.getColumnModel().getColumn(9).setMaxWidth(0);
+        tblDatos.getColumnModel().getColumn(9).setMinWidth(0);
+        tblDatos.getColumnModel().getColumn(9).setPreferredWidth(0);
     }
     
     /**

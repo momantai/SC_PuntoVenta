@@ -5,6 +5,16 @@
  */
 package interfaces.clientes;
 
+import com.mysql.jdbc.Connection;
+import conexion.Conexion;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  *
  * @author momantai
@@ -18,16 +28,22 @@ public class DialClientes extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+    private int id = 0;
     
     public DialClientes() {
+        this.setTitle("Agregar usuario");
         initComponents();
     }
     
     public DialClientes(int id){
         initComponents();
+        this.setTitle("Actualizar usuario");
+        this.id = id;
         btnEntrar.setText("Actualizar");
-        lblTitulo.setText("Agregar un nuevo cliente");
+        lblTitulo.setText("Actualizar a un cliente");
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,7 +68,7 @@ public class DialClientes extends javax.swing.JDialog {
         txtDomicilio = new javax.swing.JTextField();
         btnEntrar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtApellidom = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -75,12 +91,21 @@ public class DialClientes extends javax.swing.JDialog {
 
         jLabel6.setText("Domicilio");
 
+        txtDomicilio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDomicilioActionPerformed(evt);
+            }
+        });
+
         btnEntrar.setText("Registrar");
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrarActionPerformed(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lblTitulo.setText("Agregar un nuevo cliente");
-
-        jTextField1.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,7 +131,7 @@ public class DialClientes extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
+                        .addComponent(txtApellidom, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnEntrar))
@@ -135,7 +160,7 @@ public class DialClientes extends javax.swing.JDialog {
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtApellidom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -159,6 +184,76 @@ public class DialClientes extends javax.swing.JDialog {
     private void txtApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtApellidoActionPerformed
+
+    public void llenardatos(String[] y) {
+        txtNombre.setText(y[0]);
+        txtApellido.setText(y[1]);
+        txtApellidom.setText(y[2]);
+        txtTelefono.setText(y[3]);
+        txtRFC.setText(y[6]);
+        txtDomicilio.setText(y[7]);
+        txtCorreo.setText(y[8]);
+    }
+    
+    public void consultas(String[] x){
+        Connection con = new Conexion().conectar();
+        String query = "";
+         PreparedStatement stmt = null;
+        Calendar fecha = new GregorianCalendar();
+        
+        
+        int y = fecha.get(Calendar.YEAR);
+        int m = fecha.get(Calendar.MONTH);
+        int d = fecha.get(Calendar.DAY_OF_MONTH);
+        
+        
+        
+        try {
+            if(id==0)
+                stmt = con.prepareStatement("INSERT INTO clientes(nombre, apepatC, apematC, rfc, Domicilio, telefonoC, correo, fechaAlta) VALUES(?,?,?,?,?,?,?,?)");
+            else
+                stmt = con.prepareStatement("UPDATE clientes SET nombre = ?, apepatC=?, apematC=?, rfc=?, Domicilio=?, telefonoC=?, correo=?, fechaAlta=? WHERE idCliente=" + id);
+            stmt.setString(1, x[0]);
+            stmt.setString(2, x[1]);
+            stmt.setString(3, x[2]);
+            stmt.setString(4, x[3]);
+            stmt.setString(5, x[4]);
+            stmt.setString(6, x[5]);
+            stmt.setString(7, x[6]);
+            stmt.setDate(8, Date.valueOf(y + "-" + m + "-" + d));
+            
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DialClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+        String datos[] = new String[7];
+        
+        datos[0] = txtNombre.getText();
+        datos[1] = txtApellido.getText();
+        datos[2] = txtApellidom.getText();
+        datos[3] = txtRFC.getText();
+        datos[4] = txtDomicilio.getText();
+        datos[5] = txtTelefono.getText();
+        datos[6] = txtCorreo.getText();
+        
+        
+        if(btnEntrar.getText() == "Registrar"){
+            consultas(datos);
+        } else {
+            consultas(datos);
+        }
+        
+        for (String dato : datos) {
+            System.out.println("Este dato: " + dato);
+        }
+    }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void txtDomicilioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDomicilioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDomicilioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,9 +305,9 @@ public class DialClientes extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtApellidom;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDomicilio;
     private javax.swing.JTextField txtNombre;
