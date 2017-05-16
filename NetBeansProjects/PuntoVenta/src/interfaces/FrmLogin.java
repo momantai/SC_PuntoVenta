@@ -113,18 +113,18 @@ public class FrmLogin extends javax.swing.JFrame {
         /*Se evalua el tipo de permiso que se retorno en el objeto metodo "validar" 
         para abrir la interfaz FrmPanel y decidir que botones estaran disponibles para
         el uso de los diferentes usuarios.*/
-        if(resultado==2){
+        if(resultado==3){
             panel.setLocationRelativeTo(null);
             panel.setPermiso(resultado);
             panel.setVisible(true);
             this.dispose();
-        } else if (resultado==1) {
+        } else if (resultado==2) {
             panel.setLocationRelativeTo(null);
             panel.setPermiso(resultado);
             panel.moderador();
             panel.setVisible(true);
             this.dispose();
-        } else if (resultado==0) {
+        } else if (resultado==1) {
             panel.setLocationRelativeTo(null);
             panel.setPermiso(resultado);
             panel.setVisible(true);
