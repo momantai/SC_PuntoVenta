@@ -45,7 +45,7 @@ public class Control  extends Conexion{
     }
     
     public byte modificarProductos(Productos producto){
-        String sql = "UPDATE productos SET descripcion=?, clasificacion=?, precio=?, activo=? WHERE idCodigo="+producto.getCodigo();
+        String sql = "UPDATE productos SET descripcion=?, clasificacion=?, precio=?, activo=? WHERE idProducto="+producto.getCodigo();
         byte exito=0;
         try{
             stmt = conectar().prepareStatement(sql);
