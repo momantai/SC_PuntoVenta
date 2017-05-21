@@ -108,32 +108,39 @@ public class FrmLogin extends javax.swing.JFrame {
         
         /*Se manda el objeto "credenciales" y sus variables a la clase conexion con 
         el objeto "comprobarCredenciales" y se retornara un valor tipo INT*/
-        int resultado = comprobarCredenciales.validar(credenciales);
+        int[] obt= comprobarCredenciales.validar(credenciales);
+        int resultado = obt[0];
+        int usuario = obt[1];
         
         /*Se evalua el tipo de permiso que se retorno en el objeto metodo "validar" 
         para abrir la interfaz FrmPanel y decidir que botones estaran disponibles para
         el uso de los diferentes usuarios.*/
-        if(resultado==3){
-            panel.setLocationRelativeTo(null);
-            panel.setPermiso(resultado);
-            panel.setVisible(true);
-            this.dispose();
-        } else if (resultado==2) {
-            panel.setLocationRelativeTo(null);
-            panel.setPermiso(resultado);
-            panel.moderador();
-            panel.setVisible(true);
-            this.dispose();
-        } else if (resultado==1) {
-            panel.setLocationRelativeTo(null);
-            panel.setPermiso(resultado);
-            panel.setVisible(true);
-            this.dispose();
-        } else {
+        if(obt[2]==1){
+            if(resultado==3){
+                panel.setLocationRelativeTo(null);
+                panel.setPermiso(resultado);
+                panel.setUser(usuario);
+                panel.setVisible(true);
+                this.dispose();
+            } else if (resultado==2) {
+                panel.setLocationRelativeTo(null);
+                panel.setPermiso(resultado);
+                panel.setUser(usuario);
+                panel.moderador();
+                panel.setVisible(true);
+                this.dispose();
+            } else if (resultado==1) {
+                panel.setLocationRelativeTo(null);
+                panel.setPermiso(resultado);
+                panel.setUser(usuario);
+                panel.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Usuario o Contraseña Inconrrectos");
+            }
+        }else{
             JOptionPane.showMessageDialog(rootPane, "Usuario o Contraseña Inconrrectos");
         }
-        
-        System.out.println(resultado);
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**

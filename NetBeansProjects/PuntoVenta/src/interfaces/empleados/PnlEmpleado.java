@@ -5,8 +5,6 @@
  */
 package interfaces.empleados;
 import conexion.Control;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 /**
  *
@@ -14,23 +12,36 @@ import javax.swing.JOptionPane;
  */
 public class PnlEmpleado extends javax.swing.JPanel {
 
-    private javax.swing.JFrame frame;
+    private interfaces.empleados.FrmEmpleados frame;
     private String user;
+    private int permiso;
+    private int usuario;
     /**
      * Creates new form PnlLogeado
      */
-    public PnlEmpleado(javax.swing.JFrame frame) {
+    public PnlEmpleado(interfaces.empleados.FrmEmpleados frame, int permis) {
         this.frame = frame;
         initComponents();
+        permiso=permis;
+    }
+    
+    public void SetUsuario(int usuario){
+        this.usuario=usuario;
     }
     
     public void setValores (String[] datos){
-        
         lblNombre.setText(datos[1]);
         lblUsuario.setText(datos[2]);
         user=datos[0];
-        if(datos[3].equals("2")){
-            btnEliminar.setEnabled(false);
+        lblCalle.setText(datos[5]);
+        lblNumero.setText(datos[6]);
+        lblNumeroInt.setText(datos[7]);
+        lblColonia.setText(datos[8]);
+        if(datos[3].equals(String.valueOf(permiso))){
+            btnDesactivar.setEnabled(false);
+        }
+        if(datos[4].equals("0")){
+            btnDesactivar.setText("Activar");
         }
     }
     
@@ -49,7 +60,11 @@ public class PnlEmpleado extends javax.swing.JPanel {
         lblFoto = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
+        btnDesactivar = new javax.swing.JButton();
+        lblCalle = new javax.swing.JLabel();
+        lblNumero = new javax.swing.JLabel();
+        lblNumeroInt = new javax.swing.JLabel();
+        lblColonia = new javax.swing.JLabel();
 
         lblNombre.setText("Nombre");
 
@@ -62,29 +77,51 @@ public class PnlEmpleado extends javax.swing.JPanel {
             }
         });
 
-        btnEliminar.setText("Eliminar");
+        btnDesactivar.setText("Desactivar");
+        btnDesactivar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesactivarActionPerformed(evt);
+            }
+        });
+
+        lblCalle.setText("Calle");
+
+        lblNumero.setText("Numero");
+
+        lblNumeroInt.setText("NumeroInt");
+
+        lblColonia.setText("Colonia");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 233, Short.MAX_VALUE)
-                        .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))
+                        .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(85, 85, 85)
+                        .addComponent(lblNumeroInt, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(181, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblCalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblColonia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnModificar))
-                            .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnModificar))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
-                        .addGap(14, 14, 14))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnDesactivar)
+                                .addContainerGap())))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,15 +131,22 @@ public class PnlEmpleado extends javax.swing.JPanel {
                         .addGap(24, 24, 24)
                         .addComponent(lblNombre)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblUsuario))
+                        .addComponent(lblUsuario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCalle))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblNumero)
+                    .addComponent(lblNumeroInt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblColonia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnModificar)
-                    .addComponent(btnEliminar))
-                .addContainerGap())
+                    .addComponent(btnDesactivar)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -124,16 +168,44 @@ public class PnlEmpleado extends javax.swing.JPanel {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
-        
+        DialNuevoEmpleado modi= new DialNuevoEmpleado(this.frame, true);
+        modi.darValores(user);
+        modi.setearBoton();
+        modi.setLocationRelativeTo(null);
+        modi.setVisible(true);
+        frame.mostrarDatos(permiso);
     }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
+        // TODO add your handling code here:
+        if(JOptionPane.showConfirmDialog(this, "Seguro que desea desactivar este empleado?")==0){
+            Control controla= new Control();
+            if(btnDesactivar.getText().equals("Desactivar")){
+                if(controla.desactivarEmpleado(user)==1){
+                    JOptionPane.showMessageDialog(this, "Empleado desactivado");
+                    frame.mostrarDatos(permiso);
+                }
+            }else{
+                if(controla.activarEmpleado(user)==1){
+                    JOptionPane.showMessageDialog(this, "Empleado activado");
+                    frame.mostrarDatos(permiso);
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_btnDesactivarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnDesactivar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblCalle;
+    private javax.swing.JLabel lblColonia;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblNumero;
+    private javax.swing.JLabel lblNumeroInt;
     private javax.swing.JLabel lblUsuario;
     // End of variables declaration//GEN-END:variables
     public String getUser(){

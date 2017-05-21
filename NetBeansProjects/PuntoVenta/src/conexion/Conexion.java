@@ -43,13 +43,13 @@ public class Conexion {
     }
     /*Se recibe como parametro el objeto "credenciales" que tiene las variables
     de la clase Login*/
-    public int validar(Login login){
+    public int[] validar(Login login){
         ResultSet obtener = null;
         
         /*Se recuperan los datos de las variables de la clase Login*/
         String ID = login.getID();
         String contra = login.getPassword();
-        int valido=0;
+        int[] valido={0,0,0};
         
         try{//Se hace la consulta de el usuario y la contraseña en la base de datos
             System.out.println("salto");
@@ -63,7 +63,9 @@ public class Conexion {
             
             if(result.next()){
                 /*Se extrae el dato de la columna "permisos"*/
-                valido = result.getInt("permisos");//el dato que se extrajo se iguala a la variable valido
+                valido[0] = result.getInt("permisos");//el dato que se extrajo se iguala a la variable valido
+                valido[1] = result.getInt("idUser");
+                valido[2] = result.getInt("activo");
             }
             System.out.println("Se conecto correctamente");
         } catch(Exception e){
@@ -143,12 +145,17 @@ public class Conexion {
         return obtener;
     }
     
-    public ResultSet mostrarEmpleados(){
+    public ResultSet mostrarEmpleados(int cond){
         ResultSet obtener=null;
         
         try{
             System.out.println("Salto");
-            String sql = "SELECT idEmpleado, nombreE, apellidosE, users.user, permisos FROM empleado INNER JOIN users ON empleado.user=users.idUser";
+            String sql="";
+            if(cond==0){
+                sql = "SELECT idEmpleado, nombreE, apellidosE, users.user, permisos, activo, domicilio.calle, numero, numeroInt, colonia FROM empleado INNER JOIN users ON empleado.user=users.idUser INNER JOIN domicilio ON empleado.domicilioE=domicilio.idDomicilio WHERE users.activo=1";
+            }else{
+                sql = "SELECT idEmpleado, nombreE, apellidosE, users.user, permisos, activo, domicilio.calle, numero, numeroInt, colonia FROM empleado INNER JOIN users ON empleado.user=users.idUser INNER JOIN domicilio ON empleado.domicilioE=domicilio.idDomicilio";
+            }
             Statement stat = conectar().createStatement();
             obtener=(ResultSet) stat.executeQuery(sql);
             System.out.println("chido");
