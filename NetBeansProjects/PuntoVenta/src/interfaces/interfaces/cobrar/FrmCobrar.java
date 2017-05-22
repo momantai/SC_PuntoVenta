@@ -10,6 +10,8 @@ import com.mysql.jdbc.Statement;
 import javax.swing.table.DefaultTableModel;
 import conexion.Conexion;
 import interfaces.productos.FrmProductos;
+import java.awt.Dialog;
+import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,6 +60,8 @@ public class FrmCobrar extends javax.swing.JFrame {
 
         popupMenutabla = new java.awt.PopupMenu();
         menuItem1 = new java.awt.MenuItem();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblModelar = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -79,6 +83,14 @@ public class FrmCobrar extends javax.swing.JFrame {
         });
         popupMenutabla.add(menuItem1);
 
+        jMenuItem1.setText("Eliminar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tblModelar.setModel(new javax.swing.table.DefaultTableModel(
@@ -94,6 +106,7 @@ public class FrmCobrar extends javax.swing.JFrame {
         ));
         tblModelar.setToolTipText("Eliminar");
         tblModelar.setColumnSelectionAllowed(true);
+        tblModelar.setComponentPopupMenu(jPopupMenu1);
         tblModelar.setGridColor(new java.awt.Color(255, 255, 255));
         tblModelar.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
@@ -158,6 +171,11 @@ public class FrmCobrar extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtCodigoLector, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -167,7 +185,7 @@ public class FrmCobrar extends javax.swing.JFrame {
                                     .addComponent(jLabel1))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(12, 12, 12)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,36 +194,32 @@ public class FrmCobrar extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(btnCancelar))
                                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(35, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCodigoLector, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addContainerGap())))
+                                .addContainerGap(35, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
+                        .addGap(52, 52, 52)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTotal)
                         .addGap(66, 66, 66)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(285, 285, 285)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCobrar)
                             .addComponent(btnBuscar)
                             .addComponent(btnCancelar)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCodigoLector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -295,14 +309,15 @@ public class FrmCobrar extends javax.swing.JFrame {
     
     //Esta es una función que verifica si el producto existe en la base de datos por medio del codigo del producto.
     //Si existe extraera los datos de la bd y los agragara a la tabla.
-    public void nuevoProductoAComprar(){
+    public void nuevoProductoAComprar() throws SQLException{
         DefaultTableModel m = null;
         m = (DefaultTableModel)this.tblModelar.getModel();
         String datos[] =  new String[4];
         String codigo = txtCodigoLector.getText();
             txtCodigoLector.setText("");
         ResultSet infoProducto = producto(codigo);
-        if(infoProducto != null){ 
+        if(infoProducto.next()){
+            infoProducto.beforeFirst();
         try {
             while(infoProducto.next()){
                 datos[0] = infoProducto.getString(1);
@@ -325,7 +340,11 @@ public class FrmCobrar extends javax.swing.JFrame {
     //Se agrega el producto a la tabla gracias a la funcion nuevoPruductoAComprar,
     //Y el total a pagar gracias a total.
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        nuevoProductoAComprar();
+        try {
+            nuevoProductoAComprar();
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmCobrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
         total();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -388,12 +407,32 @@ public class FrmCobrar extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtCodigoLectorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoLectorKeyPressed
-        System.out.println("h");
+        
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            System.out.println("Presionaste ENTER");
+            
+            try {
+                nuevoProductoAComprar();
+            } catch (SQLException ex) {
+                Logger.getLogger(FrmCobrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            total();
+        }
     }//GEN-LAST:event_txtCodigoLectorKeyPressed
-
+    
+    FrmProductos n = new FrmProductos(true);
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        FrmProductos n = new FrmProductos();
+        n.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        n.setVisible(true);
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        DefaultTableModel t = (DefaultTableModel)tblModelar.getModel();
+        int row = tblModelar.getSelectedRow();
+        t.removeRow(row);
+        
+        total();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -436,6 +475,8 @@ public class FrmCobrar extends javax.swing.JFrame {
     private javax.swing.JButton btnCobrar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblTotal;

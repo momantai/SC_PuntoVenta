@@ -34,6 +34,24 @@ public class FrmProductos extends javax.swing.JFrame {
         mostrarDatos();
     }
     
+    public FrmProductos(boolean x){
+        if(x==true){
+            initComponents();
+            
+            btnAgregar.setEnabled(false);
+            btnAgregar.setVisible(false);
+            btnCerrar.setEnabled(false);
+            btnCerrar.setVisible(false);
+            btnEliminar.setEnabled(false);
+            btnEliminar.setVisible(false);
+            btnModificar.setEnabled(false);
+            btnModificar.setVisible(false);
+            
+            setModelo();
+            mostrarDatos();
+        }
+    }
+    
     /*
         Metodo para asignar columnas a la tabla y limpiarla para cuando se vuelva a llenar
     */
