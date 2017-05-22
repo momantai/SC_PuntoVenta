@@ -10,6 +10,8 @@ import entidades.Domicilio;
 import entidades.Empleado;
 import entidades.Usuario;
 import java.awt.Component;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -20,6 +22,9 @@ import javax.swing.JTextField;
 public class DialNuevoEmpleado extends javax.swing.JDialog {
 
     private boolean coincide;
+    private String idUSer;
+    private String idDomicilio;
+    private String idEmpleado;
     /**
      * Creates new form DialNuevoEmpleado
      */
@@ -27,6 +32,42 @@ public class DialNuevoEmpleado extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         coincide=false;
+    }
+    
+    public void setearBoton(){
+        btnAgregar.setText("Modificar");
+    }
+    
+    public void darValores(String dato){
+        Control controla = new Control();
+        idEmpleado=dato;
+        ResultSet obtenido=controla.empleadoFilt(dato);
+        try{
+            while(obtenido.next()){
+                txtNombre.setText(obtenido.getString(1));
+                txtApellidos.setText(obtenido.getString(2));
+                txtEdad.setText(obtenido.getString(3));
+                txtTelefono.setText(obtenido.getString(4));
+                idUSer=obtenido.getString(5);
+                txtUsuario.setText(obtenido.getString(6));
+                psswrContra.setText(obtenido.getString(7));
+                int per=obtenido.getInt(8);
+                if(per==0){
+                    cmbxPuesto.setSelectedIndex(2);
+                }else if(per==1){
+                    cmbxPuesto.setSelectedIndex(1);
+                }else{
+                    cmbxPuesto.setEnabled(false);
+                }
+                idDomicilio=obtenido.getString(9);
+                txtCalle.setText(obtenido.getString(10));
+                txtNumEx.setText(obtenido.getString(11));
+                txtNumIn.setText(obtenido.getString(12));
+                txtColonia.setText(obtenido.getString(13));
+            }
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
     }
     
     private boolean verificar(){
@@ -575,13 +616,26 @@ public class DialNuevoEmpleado extends javax.swing.JDialog {
             user.setUser(txtUsuario.getText());
             user.setPassword(psswrContra.getText());
             if(empleado.getPuesto().equals("JEFE")){
+                user.setPermisos(2);
+            }else if(empleado.getPuesto().equals("EMPLEADO")){
                 user.setPermisos(1);
             }
-            Control controla= new Control();
-            if(controla.nuevoEmpleado(domicilio, empleado, user)==1){
-                JOptionPane.showMessageDialog(this, "Empleado agregado con éxito");
+            if(!btnAgregar.getText().equals("Modificar")){
+                Control controla= new Control();
+                if(controla.nuevoEmpleado(domicilio, empleado, user)==1){
+                    JOptionPane.showMessageDialog(this, "Empleado agregado con éxito");
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(this, "Error al cargar");
+                }
             }else{
-                JOptionPane.showMessageDialog(this, "Error al cargar");
+                Control controla= new Control();
+                if(controla.modificarEmpleado(idDomicilio, domicilio, idUSer, user, idEmpleado, empleado)==1){
+                    JOptionPane.showMessageDialog(this, "Datos actualizados");
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(this, "Error al actualizar");
+                }
             }
         }
     }//GEN-LAST:event_btnAgregarActionPerformed

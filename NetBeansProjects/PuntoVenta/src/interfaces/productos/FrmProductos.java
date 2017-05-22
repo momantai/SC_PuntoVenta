@@ -24,7 +24,9 @@ public class FrmProductos extends javax.swing.JFrame {
      */
     private Conexion cone = new Conexion();
     private Control contro = new Control();
-    private DefaultTableModel modelo= new DefaultTableModel();
+    private DefaultTableModel modelo= new DefaultTableModel(){
+        public boolean isCellEditable(int rowIndex, int columnIndex){return false;}
+    };
     
     public FrmProductos() {
         initComponents();

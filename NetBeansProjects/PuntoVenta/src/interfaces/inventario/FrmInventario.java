@@ -5,17 +5,39 @@
  */
 package interfaces.inventario;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author awelo
  */
 public class FrmInventario extends javax.swing.JFrame {
 
+    private DefaultTableModel modelo= new DefaultTableModel(){
+        public boolean isCellEditable(int rowIndex, int columnIndex){return false;}
+    };
     /**
      * Creates new form FrmInventario
      */
     public FrmInventario() {
         initComponents();
+    }
+    
+    private void setearModelo(){
+        if(modelo.getColumnCount()==0){
+            modelo.addColumn("Codigo");
+            modelo.addColumn("Descripción");
+            modelo.addColumn("Clasificación");
+            modelo.addColumn("Precio");
+            modelo.addColumn("Activo");
+        }
+        
+        while(modelo.getRowCount()!=0){
+            modelo.removeRow(modelo.getRowCount()-1);
+        }
+    }
+    private void llenarTabla(){
+        
     }
 
     /**
@@ -81,7 +103,7 @@ public class FrmInventario extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(15, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -92,13 +114,13 @@ public class FrmInventario extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
                     .addComponent(btnModificar)

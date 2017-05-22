@@ -20,33 +20,50 @@ public class FrmEmpleados extends javax.swing.JFrame {
 
     private final Control con = new Control();
     private int permiso;
+    private int usuario;
+    private int activo;
+    //private javax.swing.JFrame form;
     /**
      * Creates new form FrmEmpleados
      */
     public FrmEmpleados() {
         initComponents();
+        activo=0;
+        //form=frame;
+    }
+    
+    public void setUsuario(int usuario){
+        this.usuario=usuario;
     }
     
     public void mostrarDatos(int permiso){
-        ResultSet obtenido = con.mostrarEmpleados();
+        ResultSet obtenido = con.mostrarEmpleados(activo);
         try{
-            String[] datos = new String[4];
+            String[] datos = new String[9];
             JPanel panel= new JPanel();
             BorderLayout capa= new BorderLayout();
             cappCapa.setLayout(capa);
             System.out.println(getPermiso());
-            if(permiso<2){
+            if(this.permiso<3){
                 while(obtenido.next()){
                     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
                     datos[0]=obtenido.getString(1);
                     datos[1]=obtenido.getString(2)+ " "+obtenido.getString(3);
                     datos[2]=obtenido.getString(4);
                     datos[3]=obtenido.getString(5);
-                    if(!datos[3].equals("2")){
-                        PnlEmpleado empleado= new PnlEmpleado(this);
-                        empleado.getMaximumSize();
-                        empleado.setValores(datos);
-                        panel.add(empleado, BorderLayout.CENTER);
+                    datos[4]=obtenido.getString(6);
+                    datos[5]=obtenido.getString(7);
+                    datos[6]=obtenido.getString(8);
+                    datos[7]=obtenido.getString(9);
+                    datos[8]=obtenido.getString(10);
+                    if(!datos[3].equals("3")){
+                        if(datos[3].equals("1") || datos[0].equals(String.valueOf(usuario))){
+                            PnlEmpleado empleado= new PnlEmpleado(this, permiso);
+                            empleado.getMaximumSize();
+                            empleado.setValores(datos);
+                            empleado.SetUsuario(usuario);
+                            panel.add(empleado, BorderLayout.CENTER);
+                        }
                     }
                 }
             }else{
@@ -56,7 +73,11 @@ public class FrmEmpleados extends javax.swing.JFrame {
                     datos[1]=obtenido.getString(2)+ " "+obtenido.getString(3);
                     datos[2]=obtenido.getString(4);
                     datos[3]=obtenido.getString(5);
-                    PnlEmpleado empleado= new PnlEmpleado(this);
+                    datos[4]=obtenido.getString(6);
+                    datos[5]=obtenido.getString(7);
+                    datos[6]=obtenido.getString(8);
+                    datos[7]=obtenido.getString(9);
+                    PnlEmpleado empleado= new PnlEmpleado(this, permiso);
                     empleado.getMaximumSize();
                     empleado.setValores(datos);
                     panel.add(empleado, BorderLayout.CENTER);
@@ -81,8 +102,9 @@ public class FrmEmpleados extends javax.swing.JFrame {
         cappCapa = new javax.swing.JLayeredPane();
         btnAgregar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscar = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        chbxInactivos = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,11 +112,11 @@ public class FrmEmpleados extends javax.swing.JFrame {
         cappCapa.setLayout(cappCapaLayout);
         cappCapaLayout.setHorizontalGroup(
             cappCapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 447, Short.MAX_VALUE)
+            .addGap(0, 462, Short.MAX_VALUE)
         );
         cappCapaLayout.setVerticalGroup(
             cappCapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 266, Short.MAX_VALUE)
+            .addGap(0, 269, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(cappCapa);
@@ -113,7 +135,20 @@ public class FrmEmpleados extends javax.swing.JFrame {
             }
         });
 
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
+
         jLabel1.setText("Buscar:");
+
+        chbxInactivos.setText("Mostrar Inactivos");
+        chbxInactivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbxInactivosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,21 +162,24 @@ public class FrmEmpleados extends javax.swing.JFrame {
                 .addGap(23, 23, 23))
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(24, 24, 24)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60)
+                        .addComponent(chbxInactivos))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(chbxInactivos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -157,19 +195,30 @@ public class FrmEmpleados extends javax.swing.JFrame {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        FrmPanel panelito= new FrmPanel();
-        if(permiso<2){
-            panelito.moderador();
-        }
-        panelito.setLocationRelativeTo(null);
-        panelito.setVisible(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         DialNuevoEmpleado empleado= new DialNuevoEmpleado(this, true);
         empleado.setVisible(true);
+        empleado.setLocationRelativeTo(null);
+        mostrarDatos(permiso);
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtBuscarKeyReleased
+
+    private void chbxInactivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbxInactivosActionPerformed
+        // TODO add your handling code here:
+        if(chbxInactivos.isSelected()){
+            activo=1;
+        }else{
+            activo=0;
+        }
+        mostrarDatos(activo);
+    }//GEN-LAST:event_chbxInactivosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,9 +259,10 @@ public class FrmEmpleados extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JLayeredPane cappCapa;
+    private javax.swing.JCheckBox chbxInactivos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 
     /**

@@ -22,19 +22,17 @@ public class Control  extends Conexion{
         int c = producto.getClasificacion();
         float d = producto.getPrecio();
         int e = producto.getActivo();
-        String f = producto.getImagen();
         byte exito=0;
         
         try {
             Connection con;
             con = conectar();
-            stmt = con.prepareStatement("INSERT INTO productos VALUES(?, ?, ?, ?, ?, ?)");
+            stmt = con.prepareStatement("INSERT INTO productos VALUES(?, ?, ?, ?, ?)");
             stmt.setInt(1, a);
             stmt.setString(2, b);
             stmt.setInt(3, c);
             stmt.setFloat(4, d);
             stmt.setInt(5, e);
-            stmt.setString(6, f);
             
             stmt.executeUpdate();
             exito=1;
@@ -54,8 +52,9 @@ public class Control  extends Conexion{
             stmt.setFloat(3, producto.getPrecio());
             stmt.setInt(4, producto.getActivo());
             
-            stmt.executeQuery();
-            exito=1;
+            if(stmt.executeUpdate()==1){
+                exito=1;
+            }
         } catch(SQLException e){
             System.out.println("Error al cargar "+e);
         }
@@ -78,7 +77,7 @@ public class Control  extends Conexion{
         byte exito=0;
         try{
             System.out.println("Desde aqui");
-            String sql="INSERT INTO users VALUES(0,?,?,?)";
+            String sql="INSERT INTO users VALUES(0,?,?,?,1)";
             stmt=conectar().prepareStatement(sql);
             stmt.setString(1, usuario.getUser());
             stmt.setString(2, usuario.getPassword());
@@ -191,6 +190,46 @@ public class Control  extends Conexion{
             }
             
         } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
+    }
+    public byte desactivarEmpleado(String dato){
+        byte exito=0;
+        try{
+            String sql="SELECT users.idUSer FROM empleado INNER JOIN users ON empleado.user=users.idUser WHERE idEmpleado="+dato;
+            Statement stat= conectar().createStatement();
+            ResultSet obtener=stat.executeQuery(sql);
+            String ids="";
+            while(obtener.next()){
+                ids=obtener.getString(1);
+            }
+            sql="UPDATE users SET activo=0 WHERE idUser="+ids;
+            stmt=conectar().prepareStatement(sql);
+            if(stmt.executeUpdate()==1){
+                exito=1;
+            }
+        }catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
+    }
+    public byte activarEmpleado(String dato){
+        byte exito=0;
+        try{
+            String sql="SELECT users.idUSer FROM empleado INNER JOIN users ON empleado.user=users.idUser WHERE idEmpleado="+dato;
+            Statement stat= conectar().createStatement();
+            ResultSet obtener=stat.executeQuery(sql);
+            String ids="";
+            while(obtener.next()){
+                ids=obtener.getString(1);
+            }
+            sql="UPDATE users SET activo=1 WHERE idUser="+ids;
+            stmt=conectar().prepareStatement(sql);
+            if(stmt.executeUpdate()==1){
+                exito=1;
+            }
+        }catch(SQLException e){
             System.out.println("Error en la conexion "+e);
         }
         return exito;

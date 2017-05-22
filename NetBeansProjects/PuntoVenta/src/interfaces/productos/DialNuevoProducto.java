@@ -73,6 +73,7 @@ public class DialNuevoProducto extends javax.swing.JDialog {
                     chbxActivo.setSelected(true);
                 }
             }
+            btnLimpiar.setEnabled(false);
             
         } catch (SQLException e){
             JOptionPane.showMessageDialog(this, "Error al cargar los Datos "+e);
@@ -286,8 +287,6 @@ public class DialNuevoProducto extends javax.swing.JDialog {
                     producto.setActivo(0);
                 }
         
-                producto.setImagen(rutaImagen);
-        
                 if(controla.registrarProductos(producto)==1){
                     JOptionPane.showMessageDialog(this, "Producto Registrado");
                 } else{
@@ -310,16 +309,11 @@ public class DialNuevoProducto extends javax.swing.JDialog {
             }else{
                 producto.setActivo(0);
             }
- 
-            producto.setImagen(rutaImagen);
-        
-            if(controla.registrarProductos(producto)==1){
-                JOptionPane.showMessageDialog(this, "Producto Registrado");
+            if(controla.modificarProductos(producto)==1){
+                JOptionPane.showMessageDialog(this, "Producto Actualizado");
             } else{
                 JOptionPane.showMessageDialog(this, "Error al Cargar");
             }
-            
-            controla.modificarProductos(producto);
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
