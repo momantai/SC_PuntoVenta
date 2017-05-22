@@ -300,7 +300,7 @@ public class FrmCobrar extends javax.swing.JFrame {
         m = (DefaultTableModel)this.tblModelar.getModel();
         String datos[] =  new String[4];
         String codigo = txtCodigoLector.getText();
-            
+            txtCodigoLector.setText("");
         ResultSet infoProducto = producto(codigo);
         if(infoProducto != null){ 
         try {
