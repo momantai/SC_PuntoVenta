@@ -10,18 +10,14 @@ import com.mysql.jdbc.Statement;
 import javax.swing.table.DefaultTableModel;
 import conexion.Conexion;
 import interfaces.productos.FrmProductos;
-import java.awt.Dialog;
 import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 /**
  *
@@ -173,6 +169,11 @@ public class FrmCobrar extends javax.swing.JFrame {
         });
 
         cobroCliente.setText("Cobro a cliente");
+        cobroCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cobroClienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -322,6 +323,39 @@ public class FrmCobrar extends javax.swing.JFrame {
                 st.setTime(4, java.sql.Time.valueOf(hora));
                 
                 st.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(rootPane, "Error con base de datos.");
+        }
+        
+    }
+    
+    public void cobraraclientequepaga(int idCliente, float monto){
+        Date ahora = new Date();
+        SimpleDateFormat formatFecha = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss");
+        
+        String dia = formatFecha.format(ahora);
+        String hora = formatHora.format(ahora);
+        
+        String sql = "INSERT INTO pagosCliente(idEmpleadoCP, idClientePago, monto, fecha, hora) VALUES(?,?,?,?,?)";
+        String sql1 = "UPDATE clientes SET saldo = saldo - ? WHERE idCliente = " + idCliente;
+        
+        ResultSet obtener = null;
+
+        try {
+            PreparedStatement st = (PreparedStatement) con.prepareStatement(sql);
+                st.setInt(1, idEmpleado);
+                st.setInt(2, idCliente);
+                st.setFloat(3, monto);
+                st.setDate(4, java.sql.Date.valueOf(dia));
+                st.setTime(5, java.sql.Time.valueOf(hora));
+                
+                st.executeUpdate();
+                
+            PreparedStatement st1 = (PreparedStatement) con.prepareStatement(sql1);
+                st1.setFloat(1, monto);
+
+                st1.executeUpdate();
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(rootPane, "Error con base de datos.");
         }
@@ -524,6 +558,53 @@ public class FrmCobrar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "No hay producto en lista para venta.");
         }
     }//GEN-LAST:event_ventaClienteActionPerformed
+
+    private void cobroClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cobroClienteActionPerformed
+        String identificador = JOptionPane.showInputDialog("Ingrese identificador del cliente");
+        int identi = Integer.parseInt(identificador);
+        String query = "SELECT nombre, apepatC, apematC FROM clientes WHERE idCliente = " + identificador;
+        String nombreC = "";
+        Statement sta;
+        int pagara = 0;
+        int pagocon = 0;
+        int cambio = 0;
+        try {
+            sta = (Statement) con.createStatement();
+            ResultSet r = sta.executeQuery(query);
+
+                while (r.next()) {
+                    nombreC = r.getString("nombre")+ " " + r.getString("apepatC") + " " + r.getString("apematC");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmCobrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        int o = JOptionPane.showConfirmDialog(rootPane, "El cliente: ***" + nombreC + "*** ¿Es correcto?");
+        if(o == 0){
+            try{
+                pagara = Integer.parseInt(JOptionPane.showInputDialog("¿Cuanto pagara?"));
+                pagocon = Integer.parseInt(JOptionPane.showInputDialog("Pagara con: "));
+                cambio = pagocon - pagara;
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(rootPane, "No deje los campos vacios!");
+            }
+            
+            if(pagara>pagocon){
+                JOptionPane.showMessageDialog(rootPane, "La cantidad a pagar no puede ser mayor al pago a realizar.");
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Su cambio es: " + cambio);
+                
+                int c = JOptionPane.showConfirmDialog(rootPane, "¿En verdad desea realizar el cobro?");
+                
+                if(c == 0){
+                    cobraraclientequepaga(identi, pagara);
+                    JOptionPane.showMessageDialog(rootPane, "Pagado con exito!");
+                }
+            }
+        }
+        
+        
+    }//GEN-LAST:event_cobroClienteActionPerformed
 
     /**
      * @param args the command line arguments
