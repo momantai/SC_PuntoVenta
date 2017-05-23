@@ -311,7 +311,7 @@ public class FrmCobrar extends javax.swing.JFrame {
         String dia = formatFecha.format(ahora);
         String hora = formatHora.format(ahora);
         
-        String sql = "INSERT INTO ventas(idEmpleado, monto, fecha, hora) VALUES(?,?,?,?)  ";
+        String sql = "INSERT INTO ventas(idEmpleado, monto, fecha, hora, vendido, cliente) VALUES(?,?,?,?,?,?)";
         
         ResultSet obtener = null;
 
@@ -321,6 +321,8 @@ public class FrmCobrar extends javax.swing.JFrame {
                 st.setFloat(2, total);
                 st.setDate(3, java.sql.Date.valueOf(dia));
                 st.setTime(4, java.sql.Time.valueOf(hora));
+                st.setInt(5, 1);
+                st.setInt(6, 0);
                 
                 st.executeUpdate();
         } catch (Exception e) {
@@ -370,8 +372,8 @@ public class FrmCobrar extends javax.swing.JFrame {
         
         String dia = formatFecha.format(ahora);
         String hora = formatHora.format(ahora);
-        
-        String sql = "INSERT INTO ventasClientes(idEmpleadoC, monto, fecha, hora) VALUES(?,?,?,?)";
+        //String sql = "INSERT INTO ventas(idEmpleado, monto, fecha, hora) VALUES(?,?,?,?)  ";
+        String sql = "INSERT INTO ventas(idEmpleado, monto, fecha, hora, vendido, cliente) VALUES(?,?,?,?,?,?)";
         String sql1 = "UPDATE clientes SET saldo = saldo + ? WHERE idCliente = " + identificador;
 
         try {
@@ -380,6 +382,8 @@ public class FrmCobrar extends javax.swing.JFrame {
                 st.setFloat(2, total);
                 st.setDate(3, java.sql.Date.valueOf(dia));
                 st.setTime(4, java.sql.Time.valueOf(hora));
+                st.setInt(5, 1);
+                st.setInt(6, Integer.parseInt(identificador));
                 
                 st.executeUpdate();
                 
