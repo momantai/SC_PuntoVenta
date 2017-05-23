@@ -1,6 +1,7 @@
 
 package conexion;
 import com.mysql.jdbc.Connection;
+import entidades.Cliente;
 import entidades.Compras;
 import entidades.Domicilio;
 import entidades.Empleado;
@@ -495,6 +496,35 @@ public class Control  extends Conexion{
         }catch(SQLException e){
             System.out.println("Error en la conexion "+e);
         }
+        return exito;
+    }
+    
+    PreparedStatement st = null;
+    Connection con = conectar();
+    public byte registrarCliente(Cliente cliente, int o, int id) {
+        byte exito = 0;
+        
+        try {
+            if(o==0){
+                st = con.prepareStatement("INSERT INTO clientes(nombre, apepatC, apematC, rfc, Domicilio, telefonoC, correo, fechaAlta) VALUES(?,?,?,?,?,?,?,?)");
+            }
+            else
+                st = con.prepareStatement("UPDATE clientes SET nombre = ?, apepatC=?, apematC=?, rfc=?, Domicilio=?, telefonoC=?, correo=?, fechaAlta=? WHERE idCliente=" + id);
+            st.setString(1, cliente.getNombre());
+            st.setString(2, cliente.getApellidoP());
+            st.setString(3, cliente.getApellidoM());
+            st.setString(4, cliente.getRFC());
+            st.setString(5, cliente.getDomicilio());
+            st.setString(6, cliente.getTelefono());
+            st.setString(7, cliente.getCorreo());
+            st.setDate(8, Date.valueOf(cliente.getFechaRegistro()));
+            
+            
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("" + e);
+        }
+        
         return exito;
     }
 }

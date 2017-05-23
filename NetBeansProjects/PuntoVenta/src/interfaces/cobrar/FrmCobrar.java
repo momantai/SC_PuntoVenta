@@ -72,6 +72,8 @@ public class FrmCobrar extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        ventaCliente = new javax.swing.JButton();
+        cobroCliente = new javax.swing.JButton();
 
         popupMenutabla.setLabel("popupMenu1");
 
@@ -163,6 +165,15 @@ public class FrmCobrar extends javax.swing.JFrame {
             }
         });
 
+        ventaCliente.setText("Venta a cliente");
+        ventaCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ventaClienteActionPerformed(evt);
+            }
+        });
+
+        cobroCliente.setText("Cobro a cliente");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -185,15 +196,22 @@ public class FrmCobrar extends javax.swing.JFrame {
                                     .addComponent(jLabel1))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnCancelar))
-                                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(12, 12, 12)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnCancelar))
+                                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(59, 59, 59)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cobroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ventaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addContainerGap(35, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
@@ -207,7 +225,11 @@ public class FrmCobrar extends javax.swing.JFrame {
                         .addComponent(lblTotal)
                         .addGap(66, 66, 66)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(285, 285, 285)
+                        .addGap(34, 34, 34)
+                        .addComponent(ventaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cobroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(137, 137, 137)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCobrar)
                             .addComponent(btnBuscar)
@@ -300,6 +322,37 @@ public class FrmCobrar extends javax.swing.JFrame {
                 st.setTime(4, java.sql.Time.valueOf(hora));
                 
                 st.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(rootPane, "Error con base de datos.");
+        }
+        
+    }
+    
+    public void cobrartoCliente(String identificador){
+        Float total = Float.parseFloat(lblTotal.getText());
+        Date ahora = new Date();
+        SimpleDateFormat formatFecha = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss");
+        
+        String dia = formatFecha.format(ahora);
+        String hora = formatHora.format(ahora);
+        
+        String sql = "INSERT INTO ventasClientes(idEmpleadoC, monto, fecha, hora) VALUES(?,?,?,?)";
+        String sql1 = "UPDATE clientes SET saldo = saldo + ? WHERE idCliente = " + identificador;
+
+        try {
+            PreparedStatement st = (PreparedStatement) con.prepareStatement(sql);
+                st.setInt(1, idEmpleado);
+                st.setFloat(2, total);
+                st.setDate(3, java.sql.Date.valueOf(dia));
+                st.setTime(4, java.sql.Time.valueOf(hora));
+                
+                st.executeUpdate();
+                
+            PreparedStatement st1 = (PreparedStatement) con.prepareStatement(sql1);
+                st1.setFloat(1, total);
+
+                st1.executeUpdate();
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(rootPane, "Error con base de datos.");
         }
@@ -423,6 +476,7 @@ public class FrmCobrar extends javax.swing.JFrame {
     FrmProductos n = new FrmProductos(true);
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         n.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        n.setTitle("Buscar en productos");
         n.setVisible(true);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -433,6 +487,43 @@ public class FrmCobrar extends javax.swing.JFrame {
         
         total();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void ventaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ventaClienteActionPerformed
+        String identificador = JOptionPane.showInputDialog("Ingrese identificador del cliente");
+        String query = "SELECT nombre, apepatC, apematC FROM clientes WHERE idCliente = " + identificador;
+        String nombreC = "";
+        Statement sta;
+        float subtotal = Float.parseFloat(lblTotal.getText());
+        
+        if(subtotal > 0){
+            try {
+                sta = (Statement) con.createStatement();
+                ResultSet r = sta.executeQuery(query);
+
+                while (r.next()) {
+                    nombreC = r.getString("nombre")+ " " + r.getString("apepatC") + " " + r.getString("apematC");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(FrmCobrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            int o = JOptionPane.showConfirmDialog(rootPane, "El cliente: ***" + nombreC + "*** ¿Es correcto?");
+
+            if(o == 0){
+                int c = JOptionPane.showConfirmDialog(rootPane, "¿Desea confirmar la venta?");
+                if(c == 0){
+                    cobrartoCliente(identificador);
+                    descontar();
+                    modeloTabla();
+                    lblTotal.setText("0.0");
+                    
+                    JOptionPane.showMessageDialog(rootPane, "¡Venta realizada!");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "No hay producto en lista para venta.");
+        }
+    }//GEN-LAST:event_ventaClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -460,6 +551,9 @@ public class FrmCobrar extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(FrmCobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -473,6 +567,7 @@ public class FrmCobrar extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCobrar;
+    private javax.swing.JButton cobroCliente;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -484,5 +579,6 @@ public class FrmCobrar extends javax.swing.JFrame {
     private java.awt.PopupMenu popupMenutabla;
     private javax.swing.JTable tblModelar;
     private javax.swing.JTextField txtCodigoLector;
+    private javax.swing.JButton ventaCliente;
     // End of variables declaration//GEN-END:variables
 }
