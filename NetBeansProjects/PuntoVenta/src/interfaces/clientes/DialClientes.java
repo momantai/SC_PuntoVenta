@@ -7,6 +7,8 @@ package interfaces.clientes;
 
 import com.mysql.jdbc.Connection;
 import conexion.Conexion;
+import conexion.Control;
+import entidades.Cliente;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -71,7 +74,6 @@ public class DialClientes extends javax.swing.JDialog {
         txtApellidom = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Nuevo Cliente");
         setResizable(false);
 
         jLabel1.setText("Nombre");
@@ -185,7 +187,7 @@ public class DialClientes extends javax.swing.JDialog {
     private void txtApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtApellidoActionPerformed
-
+    String[] y = new String[WIDTH];
     public void llenardatos(String[] y) {
         txtNombre.setText(y[0]);
         txtApellido.setText(y[1]);
@@ -194,39 +196,52 @@ public class DialClientes extends javax.swing.JDialog {
         txtRFC.setText(y[6]);
         txtDomicilio.setText(y[7]);
         txtCorreo.setText(y[8]);
+        this.y = y;
     }
-    
+    Control regCliente = new Control();
     public void consultas(String[] x){
         Connection con = new Conexion().conectar();
         String query = "";
-         PreparedStatement stmt = null;
+        PreparedStatement stmt = null;
         Calendar fecha = new GregorianCalendar();
         
+        Cliente cliente = new Cliente();
         
         int y = fecha.get(Calendar.YEAR);
         int m = fecha.get(Calendar.MONTH);
         int d = fecha.get(Calendar.DAY_OF_MONTH);
+        String fechax = y + "-" + m + "-" + d;
         
+        cliente.setNombre(x[0]);
+        cliente.setApellidoP(x[1]);
+        cliente.setApellidoM(x[2]);
+        cliente.setTelefono(x[5]);
+        cliente.setRFC(x[3]);
+        cliente.setDomicilio(x[4]);
+        cliente.setCorreo(x[6]);
+        cliente.setFechaRegistro(fechax);
         
-        
-        try {
-            if(id==0)
-                stmt = con.prepareStatement("INSERT INTO clientes(nombre, apepatC, apematC, rfc, Domicilio, telefonoC, correo, fechaAlta) VALUES(?,?,?,?,?,?,?,?)");
-            else
-                stmt = con.prepareStatement("UPDATE clientes SET nombre = ?, apepatC=?, apematC=?, rfc=?, Domicilio=?, telefonoC=?, correo=?, fechaAlta=? WHERE idCliente=" + id);
-            stmt.setString(1, x[0]);
-            stmt.setString(2, x[1]);
-            stmt.setString(3, x[2]);
-            stmt.setString(4, x[3]);
-            stmt.setString(5, x[4]);
-            stmt.setString(6, x[5]);
-            stmt.setString(7, x[6]);
-            stmt.setDate(8, Date.valueOf(y + "-" + m + "-" + d));
-            
-            stmt.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(DialClientes.class.getName()).log(Level.SEVERE, null, ex);
+        if(id==0){
+            regCliente.registrarCliente(cliente, 0, id);
+            JOptionPane.showMessageDialog(rootPane, "Usuario registrado.");
+            limpiar();
+        } else {
+            regCliente.registrarCliente(cliente, 1, id);
+            JOptionPane.showMessageDialog(rootPane, "Datos de usuario, actualizados.");
+            System.out.println("");
         }
+        
+        
+    }
+    
+    public void limpiar(){
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtApellidom.setText("");
+        txtTelefono.setText("");
+        txtRFC.setText("");
+        txtDomicilio.setText("");
+        txtCorreo.setText("");
     }
     
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
@@ -239,7 +254,6 @@ public class DialClientes extends javax.swing.JDialog {
         datos[4] = txtDomicilio.getText();
         datos[5] = txtTelefono.getText();
         datos[6] = txtCorreo.getText();
-        
         
         if(btnEntrar.getText() == "Registrar"){
             consultas(datos);
@@ -281,6 +295,9 @@ public class DialClientes extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(DialClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
