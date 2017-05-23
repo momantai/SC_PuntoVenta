@@ -62,6 +62,8 @@ public class FrmProductos extends javax.swing.JFrame {
             modelo.addColumn("Clasificación");
             modelo.addColumn("Precio");
             modelo.addColumn("Activo");
+            modelo.addColumn("Cantidad");
+            modelo.addColumn("Tipo");
         }
         
         while(modelo.getRowCount()!=0){
@@ -76,13 +78,15 @@ public class FrmProductos extends javax.swing.JFrame {
         try{
             ResultSet obtener = cone.datosProductos();
             if(obtener!=null){
-            String datos[] = new String[5];
+            String datos[] = new String[7];
                 while(obtener.next()){
                     datos[0]=obtener.getString(1);
                     datos[1]=obtener.getString(2);
                     datos[2]=obtener.getString(3);
                     datos[3]=obtener.getString(4);
                     datos[4]=obtener.getString(5);
+                    datos[5]=obtener.getString(6);
+                    datos[6]="De "+obtener.getString(7);
                     
                     if(datos[4].equals("0")){
                         datos[4]="No";
@@ -164,11 +168,11 @@ public class FrmProductos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblProductos);
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtBuscarKeyTyped(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyTyped(evt);
             }
         });
 
@@ -179,37 +183,37 @@ public class FrmProductos extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(btnAgregar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnModificar)
-                .addGap(18, 18, 18)
-                .addComponent(btnEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCerrar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(btnAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnModificar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 244, Short.MAX_VALUE)
+                        .addComponent(btnCerrar)))
                 .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addGap(67, 67, 67)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
                     .addComponent(btnModificar)
@@ -289,7 +293,8 @@ public class FrmProductos extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(tblProductos.getSelectedRow()>-1){
             if(JOptionPane.showConfirmDialog(this, "Esta Seguro que Quiere Borrar este Producto")==0){
-                if(contro.borrarProducto((String) tblProductos.getValueAt(tblProductos.getSelectedRow(), 0))==1){
+                int cantidad=(int) tblProductos.getValueAt(tblProductos.getSelectedRow(), 5);
+                if(contro.borrarProducto((String) tblProductos.getValueAt(tblProductos.getSelectedRow(), 0), cantidad)==1){
                     JOptionPane.showMessageDialog(this, "Exito al Borrar");
                     mostrarDatos();
                     } else{

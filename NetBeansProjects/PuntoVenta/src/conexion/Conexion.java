@@ -73,6 +73,21 @@ public class Conexion {
         }
         return valido;//Se retorna la variable "valido" con el respectivo valor que se igualo
     }
+    
+    public String buscarInven(String codigo){
+        String producto=null;
+        try{
+            String Sql="SELECT descripcionIn FROM inventario WHERE codigo="+codigo;
+            Statement stmt= conectar().createStatement();
+            ResultSet obt=stmt.executeQuery(Sql);
+            while(obt.next()){
+                producto=obt.getString(1);
+            }
+        }catch(SQLException e){
+            System.out.println("Error en la conexio "+e);
+        }
+        return producto;
+    }
      
     /*
         Metodo para hacer la conexion llenar la tabla de productos
@@ -82,7 +97,7 @@ public class Conexion {
         
         try{
             System.out.println("salto");
-            String sql = "SELECT idProducto, descripcion, clasificacion.clasificacion, precio, activo FROM productos INNER JOIN clasificacion ON productos.clasificacion=clasificacion.idClasificacion";
+            String sql = "SELECT codigoPro, descripcion, clasificacion.clasificacion, precio, activo, cantidad, inventario.descripcionIn FROM productos INNER JOIN clasificacion ON productos.clasificacion=clasificacion.idClasificacion INNER JOIN inventario ON productos.refProd=inventario.codigo";
             Statement statement = conectar().createStatement();    
             obtener=(ResultSet) statement.executeQuery(sql);
         
@@ -100,7 +115,7 @@ public class Conexion {
         
         try{
             System.out.println("salto");
-            String sql = "SELECT idProducto, descripcion, clasificacion.clasificacion, precio, activo FROM productos INNER JOIN clasificacion ON productos.clasificacion=clasificacion.idClasificacion WHERE idProducto  LIKE '"+dato+"%' OR descripcion LIKE '%"+dato+"%'";
+            String sql = "SELECT codigoPro descripcion, clasificacion.clasificacion, precio, activo, cantidad, inventario.descripcionIn FROM productos INNER JOIN clasificacion ON productos.clasificacion=clasificacion.idClasificacion  INNER JOIN inventario ON productos.refProd=inventario.codigo WHERE idProducto  LIKE '"+dato+"%' OR descripcion LIKE '%"+dato+"%'";
             
             Statement statement = con.createStatement();
             obtener=(ResultSet) statement.executeQuery(sql);
@@ -116,7 +131,7 @@ public class Conexion {
         
         try{
             System.out.println("salto");
-            String sql = "SELECT descripcion, clasificacion, precio, activo FROM productos WHERE idProducto="+dato;
+            String sql = "SELECT descripcion, clasificacion, precio, activo, cantidad, inventario.descripcionIn FROM productos INNER JOIN inventario ON productos.refProd=inventario.codigo WHERE idProducto="+dato;
             
             Statement statement = con.createStatement();
             obtener=(ResultSet) statement.executeQuery(sql);
@@ -164,4 +179,25 @@ public class Conexion {
         }
         return obtener;
     }
+    
+    public ResultSet mostrarEmpleadoFil(String dato, int cond){
+        ResultSet obtener=null;
+        
+        try{
+            System.out.println("Salto");
+            String sql="";
+            if(cond==0){
+                sql = "SELECT idEmpleado, nombreE, apellidosE, users.user, permisos, activo, domicilio.calle, numero, numeroInt, colonia FROM empleado INNER JOIN users ON empleado.user=users.idUser INNER JOIN domicilio ON empleado.domicilioE=domicilio.idDomicilio WHERE users.activo=1 AND (nombreE LIKE '%"+dato+"%' OR apellidosE LIKE '%"+dato+"%')";
+            }else{
+                sql = "SELECT idEmpleado, nombreE, apellidosE, users.user, permisos, activo, domicilio.calle, numero, numeroInt, colonia FROM empleado INNER JOIN users ON empleado.user=users.idUser INNER JOIN domicilio ON empleado.domicilioE=domicilio.idDomicilio WHERE nombreE LIKE '%"+dato+"%' OR apellidosE LIKE '%"+dato+"%'";
+            }
+            Statement stat = conectar().createStatement();
+            obtener=(ResultSet) stat.executeQuery(sql);
+            System.out.println("chido");
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obtener;
+    }
+    
 }

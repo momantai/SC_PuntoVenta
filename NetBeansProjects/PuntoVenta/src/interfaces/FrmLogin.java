@@ -2,6 +2,7 @@
 package interfaces;
 import entidades.Login;
 import conexion.Conexion;
+import interfaces.cobrar.FrmCobrar;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -130,10 +131,11 @@ public class FrmLogin extends javax.swing.JFrame {
                 panel.setVisible(true);
                 this.dispose();
             } else if (resultado==1) {
-                panel.setLocationRelativeTo(null);
-                panel.setPermiso(resultado);
-                panel.setUser(usuario);
-                panel.setVisible(true);
+                FrmCobrar cobrar = new FrmCobrar();
+                cobrar.setLocationRelativeTo(null);
+                //panel.setPermiso(resultado);
+                //panel.setUser(usuario);
+                cobrar.setVisible(true);
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Usuario o Contraseña Inconrrectos");

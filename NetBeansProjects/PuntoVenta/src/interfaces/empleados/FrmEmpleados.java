@@ -5,9 +5,9 @@
  */
 package interfaces.empleados;
 
+import conexion.Conexion;
 import java.sql.ResultSet;
 import conexion.Control;
-import interfaces.FrmPanel;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -18,6 +18,7 @@ import javax.swing.JPanel;
  */
 public class FrmEmpleados extends javax.swing.JFrame {
 
+    private final Conexion conecta = new Conexion();
     private final Control con = new Control();
     private int permiso;
     private int usuario;
@@ -207,6 +208,57 @@ public class FrmEmpleados extends javax.swing.JFrame {
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
         // TODO add your handling code here:
+        try{
+            ResultSet obtenido = conecta.mostrarEmpleadoFil(txtBuscar.getText(), permiso);
+            String[] datos = new String[9];
+            JPanel panel= new JPanel();
+            BorderLayout capa= new BorderLayout();
+            cappCapa.setLayout(capa);
+            System.out.println(getPermiso());
+            if(this.permiso<3){
+                while(obtenido.next()){
+                    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                    datos[0]=obtenido.getString(1);
+                    datos[1]=obtenido.getString(2)+ " "+obtenido.getString(3);
+                    datos[2]=obtenido.getString(4);
+                    datos[3]=obtenido.getString(5);
+                    datos[4]=obtenido.getString(6);
+                    datos[5]=obtenido.getString(7);
+                    datos[6]=obtenido.getString(8);
+                    datos[7]=obtenido.getString(9);
+                    datos[8]=obtenido.getString(10);
+                    if(!datos[3].equals("3")){
+                        if(datos[3].equals("1") || datos[0].equals(String.valueOf(usuario))){
+                            PnlEmpleado empleado= new PnlEmpleado(this, permiso);
+                            empleado.getMaximumSize();
+                            empleado.setValores(datos);
+                            empleado.SetUsuario(usuario);
+                            panel.add(empleado, BorderLayout.CENTER);
+                        }
+                    }
+                }
+            }else{
+                while(obtenido.next()){
+                    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                    datos[0]=obtenido.getString(1);
+                    datos[1]=obtenido.getString(2)+ " "+obtenido.getString(3);
+                    datos[2]=obtenido.getString(4);
+                    datos[3]=obtenido.getString(5);
+                    datos[4]=obtenido.getString(6);
+                    datos[5]=obtenido.getString(7);
+                    datos[6]=obtenido.getString(8);
+                    datos[7]=obtenido.getString(9);
+                    PnlEmpleado empleado= new PnlEmpleado(this, permiso);
+                    empleado.getMaximumSize();
+                    empleado.setValores(datos);
+                    panel.add(empleado, BorderLayout.CENTER);
+                }
+            }
+            cappCapa.add(panel);
+        } catch(java.sql.SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+            
         
     }//GEN-LAST:event_txtBuscarKeyReleased
 

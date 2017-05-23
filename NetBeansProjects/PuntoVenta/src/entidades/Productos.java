@@ -16,7 +16,8 @@ public class Productos {
     private int clasificacion;
     private float precio;
     private int activo;
-    private String imagen;
+    private int cantidad;
+    private String ref;
     
     public void datosProductos(int code, String description, int clasific, int price, int active){
         codigo = code;
@@ -97,17 +98,30 @@ public class Productos {
     }
 
     /**
-     * @return the imagen
+     * @return the cantidad
      */
-    public String getImagen() {
-        return imagen;
+    public int getCantidad() {
+        return cantidad;
     }
 
     /**
-     * @param imagen the imagen to set
+     * @param cantidad the cantidad to set
      */
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
-    
+
+    /**
+     * @return the ref
+     */
+    public String getRef() {
+        return ref;
+    }
+
+    /**
+     * @param ref the ref to set
+     */
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
 }

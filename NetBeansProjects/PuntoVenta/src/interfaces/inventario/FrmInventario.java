@@ -5,6 +5,9 @@
  */
 package interfaces.inventario;
 
+import conexion.Control;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FrmInventario extends javax.swing.JFrame {
 
+    Control controla= new Control();
     private DefaultTableModel modelo= new DefaultTableModel(){
         public boolean isCellEditable(int rowIndex, int columnIndex){return false;}
     };
@@ -21,15 +25,16 @@ public class FrmInventario extends javax.swing.JFrame {
      */
     public FrmInventario() {
         initComponents();
+        setearModelo();
+        llenarTabla();
     }
     
     private void setearModelo(){
         if(modelo.getColumnCount()==0){
             modelo.addColumn("Codigo");
             modelo.addColumn("Descripción");
-            modelo.addColumn("Clasificación");
+            modelo.addColumn("Existencia");
             modelo.addColumn("Precio");
-            modelo.addColumn("Activo");
         }
         
         while(modelo.getRowCount()!=0){
@@ -37,7 +42,24 @@ public class FrmInventario extends javax.swing.JFrame {
         }
     }
     private void llenarTabla(){
-        
+        setearModelo();
+        ResultSet obtenido= controla.mostrarInventario();
+        try{
+            if(obtenido!=null){
+                String[] datos= new String[4];
+                while(obtenido.next()){
+                    datos[0]=obtenido.getString(1);
+                    datos[1]=obtenido.getString(2);
+                    datos[2]=obtenido.getString(3);
+                    datos[3]=obtenido.getString(4);
+                    modelo.addRow(datos);
+                }
+                tblInventario.setModel(modelo);
+            
+            }
+        }catch(SQLException e){
+                System.out.println("Error al cargar los datos");
+        }
     }
 
     /**
@@ -51,9 +73,7 @@ public class FrmInventario extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInventario = new javax.swing.JTable();
-        btnAgregar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -71,15 +91,21 @@ public class FrmInventario extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblInventario);
 
-        btnAgregar.setText("Agregar");
-
-        btnModificar.setText("Modificar");
-
-        btnEliminar.setText("Eliminar");
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
         btnReporte.setText("Reporte");
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Buscar:");
 
@@ -88,28 +114,23 @@ public class FrmInventario extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnAgregar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnModificar)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnEliminar)
-                        .addGap(44, 44, 44)
-                        .addComponent(btnReporte)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGap(8, 23, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(201, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(btnActualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnReporte)
+                .addGap(134, 134, 134)
+                .addComponent(btnCancelar)
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,9 +143,7 @@ public class FrmInventario extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnModificar)
-                    .addComponent(btnEliminar)
+                    .addComponent(btnActualizar)
                     .addComponent(btnReporte)
                     .addComponent(btnCancelar))
                 .addContainerGap())
@@ -132,6 +151,20 @@ public class FrmInventario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        DialActualizar actual = new DialActualizar(this, true);
+        actual.recibirDatos(controla.mostrarInventFilt((String)tblInventario.getValueAt(tblInventario.getSelectedRow(), 0)));
+        actual.setLocationRelativeTo(null);
+        actual.setVisible(true);
+        llenarTabla();
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,7 +192,6 @@ public class FrmInventario extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(FrmInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -169,10 +201,8 @@ public class FrmInventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnReporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

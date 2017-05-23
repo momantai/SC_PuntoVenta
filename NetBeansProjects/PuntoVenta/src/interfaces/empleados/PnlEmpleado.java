@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
  */
 public class PnlEmpleado extends javax.swing.JPanel {
 
+    private Control controla= new Control();
     private interfaces.empleados.FrmEmpleados frame;
     private String user;
     private int permiso;
@@ -179,7 +180,6 @@ public class PnlEmpleado extends javax.swing.JPanel {
     private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
         // TODO add your handling code here:
         if(JOptionPane.showConfirmDialog(this, "Seguro que desea desactivar este empleado?")==0){
-            Control controla= new Control();
             if(btnDesactivar.getText().equals("Desactivar")){
                 if(controla.desactivarEmpleado(user)==1){
                     JOptionPane.showMessageDialog(this, "Empleado desactivado");

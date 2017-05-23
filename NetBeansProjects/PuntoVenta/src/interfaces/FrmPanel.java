@@ -5,8 +5,11 @@
  */
 package interfaces;
 
+import interfaces.cobrar.FrmCobrar;
 import interfaces.empleados.FrmEmpleados;
+import interfaces.inventario.FrmInventario;
 import interfaces.productos.FrmProductos;
+import interfaces.proveedores.FrmProveedores;
 
 /**
  *
@@ -100,6 +103,11 @@ public class FrmPanel extends javax.swing.JFrame {
         btnCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/compras.png"))); // NOI18N
 
         btnCobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cobrar.png"))); // NOI18N
+        btnCobrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCobrarActionPerformed(evt);
+            }
+        });
 
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/clientes.png"))); // NOI18N
 
@@ -111,6 +119,11 @@ public class FrmPanel extends javax.swing.JFrame {
         });
 
         btnProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/proveedores.png"))); // NOI18N
+        btnProveedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProveedoresActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("FreeSans", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(153, 153, 153));
@@ -298,7 +311,24 @@ public class FrmPanel extends javax.swing.JFrame {
 
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
         // TODO add your handling code here:
+        FrmInventario inventario= new FrmInventario();
+        inventario.setLocationRelativeTo(null);
+        inventario.setVisible(true);
     }//GEN-LAST:event_btnInventarioActionPerformed
+
+    private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
+        // TODO add your handling code here:
+        FrmCobrar cobrar = new FrmCobrar();
+        cobrar.setLocationRelativeTo(null);
+        cobrar.setVisible(true);
+    }//GEN-LAST:event_btnCobrarActionPerformed
+
+    private void btnProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProveedoresActionPerformed
+        // TODO add your handling code here:
+        FrmProveedores prover = new FrmProveedores();
+        prover.setLocationRelativeTo(null);
+        prover.setVisible(true);
+    }//GEN-LAST:event_btnProveedoresActionPerformed
 
     /**
      * @param args the command line arguments

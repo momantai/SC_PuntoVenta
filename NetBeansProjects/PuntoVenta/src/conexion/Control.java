@@ -4,6 +4,7 @@ import com.mysql.jdbc.Connection;
 import entidades.Domicilio;
 import entidades.Empleado;
 import entidades.Productos;
+import entidades.Proveedor;
 import entidades.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,44 +17,84 @@ import java.sql.Statement;
 public class Control  extends Conexion{
 
     private PreparedStatement stmt;
-    public byte registrarProductos(Productos producto){
+    public byte registrarProductos(Productos producto, String paquete){
         int a = producto.getCodigo();
         String b = producto.getDescripcion();
         int c = producto.getClasificacion();
         float d = producto.getPrecio();
         int e = producto.getActivo();
+        int f = producto.getCantidad();
+        String g = producto.getRef();
         byte exito=0;
-        
         try {
             Connection con;
             con = conectar();
-            stmt = con.prepareStatement("INSERT INTO productos VALUES(?, ?, ?, ?, ?)");
-            stmt.setInt(1, a);
-            stmt.setString(2, b);
-            stmt.setInt(3, c);
-            stmt.setFloat(4, d);
-            stmt.setInt(5, e);
-            
-            stmt.executeUpdate();
-            exito=1;
+            if(paquete.equals("")){
+                stmt = con.prepareStatement("INSERT INTO productos VALUES(0,?, ?, ?, ?, ?, ?, ?)");
+                stmt.setInt(1, a);
+                stmt.setString(2, b);
+                stmt.setInt(3, c);
+                stmt.setFloat(4, d);
+                stmt.setInt(5, e);
+                stmt.setInt(6, f);
+                stmt.setInt(7, Integer.parseInt(g));
+                if(stmt.executeUpdate()==1){
+                    stmt = con.prepareStatement("INSERT INTO inventario VALUES(0,?,?,0,0)");
+                    stmt.setInt(1, a);
+                    stmt.setString(2, b);
+                    if(stmt.executeUpdate()==1){
+                        exito=1;
+                    }
+                }
+            }else{
+                stmt = con.prepareStatement("INSERT INTO productos VALUES(0,?, ?, ?, ?, ?, ?, ?)");
+                stmt.setInt(1, a);
+                stmt.setString(2, b);
+                stmt.setInt(3, c);
+                stmt.setFloat(4, d);
+                stmt.setInt(5, e);
+                stmt.setInt(6, f);
+                stmt.setInt(7, Integer.parseInt(g));
+                if(stmt.executeUpdate()==1){
+                    exito=1;
+                }
+            }
         } catch(SQLException eE) {
             System.out.println("" + eE);
         }
         return exito;
     }
     
-    public byte modificarProductos(Productos producto){
-        String sql = "UPDATE productos SET descripcion=?, clasificacion=?, precio=?, activo=? WHERE idProducto="+producto.getCodigo();
+    public byte modificarProductos(Productos producto, String paquete){
         byte exito=0;
         try{
-            stmt = conectar().prepareStatement(sql);
-            stmt.setString(1, producto.getDescripcion());
-            stmt.setInt(2, producto.getClasificacion());
-            stmt.setFloat(3, producto.getPrecio());
-            stmt.setInt(4, producto.getActivo());
-            
-            if(stmt.executeUpdate()==1){
-                exito=1;
+            if(paquete.equals("")){
+                String sql = "UPDATE productos SET descripcion=?, clasificacion=?, precio=?, activo=?, cantidad=?, refProd=? WHERE codigoPro="+producto.getCodigo();
+                stmt = conectar().prepareStatement(sql);
+                stmt.setString(1, producto.getDescripcion());
+                stmt.setInt(2, producto.getClasificacion());
+                stmt.setFloat(3, producto.getPrecio());
+                stmt.setInt(4, producto.getActivo());
+                stmt.setInt(5, producto.getCantidad());
+                stmt.setInt(6, Integer.parseInt(producto.getRef()));
+                if(stmt.executeUpdate()==1){
+                    sql="UPDATE inventario SET descripcion=? WHERE codigo="+producto.getCodigo();
+                    stmt= conectar().prepareStatement(sql);
+                    stmt.setString(1, producto.getDescripcion());
+                    exito=1;
+                }
+            }else{
+                String sql = "UPDATE productos SET descripcion=?, clasificacion=?, precio=?, activo=?, cantidad=?, refProd=? WHERE codigoPro="+producto.getCodigo();
+                stmt = conectar().prepareStatement(sql);
+                stmt.setString(1, producto.getDescripcion());
+                stmt.setInt(2, producto.getClasificacion());
+                stmt.setFloat(3, producto.getPrecio());
+                stmt.setInt(4, producto.getActivo());
+                stmt.setInt(5, producto.getCantidad());
+                stmt.setInt(6, Integer.parseInt(producto.getRef()));
+                if(stmt.executeUpdate()==1){
+                    exito=1;
+                }
             }
         } catch(SQLException e){
             System.out.println("Error al cargar "+e);
@@ -61,12 +102,23 @@ public class Control  extends Conexion{
         return exito;
     }
     
-    public byte borrarProducto(String dato){
+    public byte borrarProducto(String dato, int paquete){
         byte exito=0;
         try{
-            stmt = conectar().prepareStatement("DELETE FROM productos WHERE idProducto="+dato);
-            stmt.execute();
-            exito=1;
+            if(paquete==1){
+                stmt = conectar().prepareStatement("DELETE FROM productos WHERE codigoPro="+dato);
+                if(stmt.execute()){
+                    stmt=conectar().prepareStatement("DELETE FROM productos WHERE codigo="+dato);
+                    if(stmt.execute()){
+                        exito=1;
+                    }
+                }
+            }else{
+                stmt = conectar().prepareStatement("DELETE FROM productos WHERE codigoPro="+dato);
+                if(stmt.execute()){
+                    exito=1;
+                }
+            }
         } catch(SQLException e){
             System.out.println("Error al conectar "+e);
         }
@@ -160,7 +212,20 @@ public class Control  extends Conexion{
         }
         return exito;
     }
-    
+    public byte agregarClasificacion(String clasificacion){
+        byte exito=0;
+        try{
+            String sql="INSERT INTO clasificaion VALUES(0,?)";
+            PreparedStatement stat=conectar().prepareStatement(sql);
+            stat.setString(1, clasificacion);
+            if(stat.executeUpdate()==1){
+                exito=1;
+            }
+        }catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
+    }
     public byte borrarEmpleado(String dato){
         byte exito=0;
         try{
@@ -233,5 +298,129 @@ public class Control  extends Conexion{
             System.out.println("Error en la conexion "+e);
         }
         return exito;
+    }
+    
+    public ResultSet mostrarInventario(){
+        ResultSet obt=null;
+        try{
+            String sql="SELECT codigo, descripcionIn, existencia, costo FROM inventario";
+            Statement stat = conectar().createStatement();
+            obt=stat.executeQuery(sql);
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obt;
+    }
+    
+    public ResultSet mostrarInventFilt(String dato){
+        ResultSet obt= null;
+        try{
+            String sql="SELECT codigo, descripcionIn, existencia, costo FROM inventario WHERE codigo="+dato;
+            Statement stat = conectar().createStatement();
+            obt=stat.executeQuery(sql);
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obt;
+    }
+    
+    public byte actualizarInventario(String dato, int suma, float costo){
+        byte exito=0;
+        try{
+            String sql="UPDATE inventario SET existencia=?, costo=? WHERE codigo="+dato;
+            PreparedStatement stat= conectar().prepareStatement(sql);
+            stat.setInt(1, suma);
+            stat.setFloat(2, costo);
+            if(stat.executeUpdate()==1){
+                exito=1;
+            }
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
+    }
+    
+    public ResultSet mostrarProveedores(){
+        ResultSet obt=null;
+        try{
+            String sql="SELECT * FROM proveedores";
+            Statement stat= conectar().createStatement();
+            obt=stat.executeQuery(sql);
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obt;
+    }
+    
+    public ResultSet mostrarProveedorFil(String dato){
+            ResultSet obt=null;
+        try{
+            String sql="SELECT nombreEmpresa, rfcEmpresa, telefono FROM proveedores WHERE nEmpresa="+dato;
+            Statement stat= conectar().createStatement();
+            obt=stat.executeQuery(sql);
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obt;
+    }
+    
+    public byte agregarProveedor(Proveedor prove){
+        byte exito=0;
+        try{
+            String sql="INSERT INTO proveedores VALUES(0,?,?,?)";
+            PreparedStatement stat = conectar().prepareStatement(sql);
+            stat.setString(1, prove.getNombreEmpresa());
+            stat.setString(2, prove.getRfc());
+            stat.setString(3, prove.getTelefono());
+            if(stat.executeUpdate()==1){
+                exito=1;
+            }
+        }catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
+    }
+    
+    public byte modificarProveedor(Proveedor prove, String dato){
+        byte exito=0;
+        try{
+            String sql="UPDATE proveedores SET nombreEmpresa=?, rfcEmpresa=?, telefono=? WHERE nEmpresa="+dato;
+            PreparedStatement stat = conectar().prepareStatement(sql);
+            stat.setString(1, prove.getNombreEmpresa());
+            stat.setString(2, prove.getRfc());
+            stat.setString(3, prove.getTelefono());
+            if(stat.executeUpdate()==1){
+                exito=1;
+            }
+        }catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
+    }
+    
+    public byte eliminarProve(String dato){
+        byte exito=0;
+        try{
+            String sql="UPDATE proveedores SET activoProv=0 WHERE nEmpresa="+dato;
+            PreparedStatement stat = conectar().prepareStatement(sql);
+            if(stat.executeUpdate()==1){
+                exito=1;
+            }
+        }catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
+    }
+    
+    public ResultSet mostrarCompras(){
+        ResultSet obt=null;
+        try{
+            String sql="SELECT idCompra, monto, proveedores.nombreEmpresa, fecha, hora FROM compras INNER JOIN proveedores ON compras.proveedor=proveedores.nEmpresa";
+            Statement stat = conectar().createStatement();
+            obt = stat.executeQuery(sql);
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obt;
     }
 }
