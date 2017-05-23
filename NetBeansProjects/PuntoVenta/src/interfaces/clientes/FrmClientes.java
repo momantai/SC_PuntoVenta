@@ -51,8 +51,8 @@ public class FrmClientes extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         lblTel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        EditarCliente = new javax.swing.JButton();
+        EliminarCliente = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -107,17 +107,17 @@ public class FrmClientes extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Editar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        EditarCliente.setText("Editar");
+        EditarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                EditarClienteActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Eliminar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        EliminarCliente.setText("Eliminar");
+        EliminarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                EliminarClienteActionPerformed(evt);
             }
         });
 
@@ -149,7 +149,7 @@ public class FrmClientes extends javax.swing.JFrame {
                                         .addGap(10, 10, 10)
                                         .addComponent(jButton1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton2)
+                                        .addComponent(EditarCliente)
                                         .addGap(87, 87, 87)
                                         .addComponent(jButton4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -168,7 +168,7 @@ public class FrmClientes extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDebe, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton3)
+                                .addComponent(EliminarCliente)
                                 .addGap(20, 20, 20))
                             .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -204,8 +204,8 @@ public class FrmClientes extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
+                    .addComponent(EditarCliente)
+                    .addComponent(EliminarCliente)
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -243,7 +243,7 @@ public class FrmClientes extends javax.swing.JFrame {
         datospasar = data;
     }//GEN-LAST:event_tblDatosMousePressed
         
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void EditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarClienteActionPerformed
         DialClientes clientes = new DialClientes(id);
         if(id!=0){
             clientes.llenardatos(datospasar);
@@ -252,7 +252,7 @@ public class FrmClientes extends javax.swing.JFrame {
         }
         else
             JOptionPane.showMessageDialog(rootPane, "Seleccione un cliente.");
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_EditarClienteActionPerformed
         DialClientes Actclientes = new DialClientes();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
@@ -260,7 +260,7 @@ public class FrmClientes extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
         Connection con = new Conexion().conectar();
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void EliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarClienteActionPerformed
         float a;
         String delete = "DELETE FROM clientes WHERE idCliente = " + id;
         
@@ -282,7 +282,7 @@ public class FrmClientes extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "El usuario no se puede eliminar hasta que pague su adeudo.");
         } else
             JOptionPane.showMessageDialog(rootPane, "Seleccione un cliente.");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_EliminarClienteActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         consultas();
@@ -377,9 +377,9 @@ public class FrmClientes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton EditarCliente;
+    private javax.swing.JButton EliminarCliente;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
