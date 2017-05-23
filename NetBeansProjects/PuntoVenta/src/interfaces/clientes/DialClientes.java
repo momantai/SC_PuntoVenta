@@ -71,6 +71,7 @@ public class DialClientes extends javax.swing.JDialog {
         txtApellidom = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nuevo Cliente");
         setResizable(false);
 
         jLabel1.setText("Nombre");

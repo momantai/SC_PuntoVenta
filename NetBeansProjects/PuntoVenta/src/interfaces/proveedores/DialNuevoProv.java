@@ -64,6 +64,7 @@ public class DialNuevoProv extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nuevo Proveedor");
 
         jLabel1.setText("Nombre de la Empresa:");
 

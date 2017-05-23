@@ -7,6 +7,7 @@ package interfaces;
 
 import interfaces.clientes.FrmClientes;
 import interfaces.cobrar.FrmCobrar;
+import interfaces.compras.FrmCompras;
 import interfaces.empleados.FrmEmpleados;
 import interfaces.inventario.FrmInventario;
 import interfaces.productos.FrmProductos;
@@ -80,6 +81,7 @@ public class FrmPanel extends javax.swing.JFrame {
         btnCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Panel Principal");
 
         btnProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/productos.png"))); // NOI18N
         btnProductos.addActionListener(new java.awt.event.ActionListener() {
@@ -102,6 +104,11 @@ public class FrmPanel extends javax.swing.JFrame {
         btnCompras.setFont(new java.awt.Font("FreeSans", 1, 12)); // NOI18N
         btnCompras.setForeground(new java.awt.Color(153, 153, 153));
         btnCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/compras.png"))); // NOI18N
+        btnCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnComprasActionPerformed(evt);
+            }
+        });
 
         btnCobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cobrar.png"))); // NOI18N
         btnCobrar.addActionListener(new java.awt.event.ActionListener() {
@@ -342,6 +349,13 @@ public class FrmPanel extends javax.swing.JFrame {
         cliente.setLocationRelativeTo(null);
         cliente.setVisible(true);
     }//GEN-LAST:event_btnClientesActionPerformed
+
+    private void btnComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprasActionPerformed
+        // TODO add your handling code here:
+        FrmCompras comprar = new FrmCompras();
+        comprar.setLocationRelativeTo(null);
+        comprar.setVisible(true);
+    }//GEN-LAST:event_btnComprasActionPerformed
 
     /**
      * @param args the command line arguments

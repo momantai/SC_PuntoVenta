@@ -129,6 +129,7 @@ public class DialNuevoEmpleado extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nuevo Empleado");
 
         jLabel1.setText("*Nombre:");
 

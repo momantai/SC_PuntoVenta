@@ -143,6 +143,7 @@ public class DialNuevoProducto extends javax.swing.JDialog {
         btnClasif = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nuevo Producto");
 
         btnAceptar.setText("Agregar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {

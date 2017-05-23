@@ -1,11 +1,13 @@
 
 package conexion;
 import com.mysql.jdbc.Connection;
+import entidades.Compras;
 import entidades.Domicilio;
 import entidades.Empleado;
 import entidades.Productos;
 import entidades.Proveedor;
 import entidades.Usuario;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -415,12 +417,84 @@ public class Control  extends Conexion{
     public ResultSet mostrarCompras(){
         ResultSet obt=null;
         try{
-            String sql="SELECT idCompra, monto, proveedores.nombreEmpresa, fecha, hora FROM compras INNER JOIN proveedores ON compras.proveedor=proveedores.nEmpresa";
+            String sql="SELECT idCompra, monto, proveedores.nombreEmpresa, fecha, hora FROM compras INNER JOIN proveedores ON compras.proveedor=proveedores.nEmpresa ORDER BY idCompra DESC";
             Statement stat = conectar().createStatement();
             obt = stat.executeQuery(sql);
         } catch(SQLException e){
             System.out.println("Error en la conexion "+e);
         }
         return obt;
+    }
+    
+    public byte agregarCompra(Compras compra){
+        byte exito=0;
+        try{
+            String sql="INSERT INTO compras VALUES(0,?,?,?,?)";
+            PreparedStatement stat = conectar().prepareStatement(sql);
+            stat.setFloat(1, compra.getMonto());
+            stat.setInt(2, compra.getProveedor());
+            stat.setDate(3, compra.getFecha());
+            stat.setTime(4, compra.getHora());
+            if(stat.executeUpdate()==1){
+                exito=1;
+            }
+        }catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
+    }
+    
+    public int buscarProve(String dato){
+        int valor=0;
+        ResultSet obt=null;
+        try{
+            String sql="SELECT nEmpresa FROM proveedores WHERE nombreEmpresa='"+dato+"'";
+            Statement stat = conectar().createStatement();
+            obt = stat.executeQuery(sql);
+            while(obt.next()){
+                valor=obt.getInt(1);
+            }
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return valor;
+    }
+    
+    public ResultSet mostrarComprasFil(Date fechaIn, Date fechaFin){
+        ResultSet obt=null;
+        try{
+            String sql="SELECT idCompra, monto, proveedores.nombreEmpresa, fecha, hora FROM compras INNER JOIN proveedores ON compras.proveedor=proveedores.nEmpresa WHERE fecha>='"+fechaIn+"' AND fecha<='"+fechaFin+"'";
+            Statement stat = conectar().createStatement();
+            obt = stat.executeQuery(sql);
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obt;
+    }
+    
+    public ResultSet mostrarUnaCompra(String dato){
+        ResultSet obt=null;
+        try{
+            String sql="SELECT idCompra, monto, proveedores.nombreEmpresa, fecha, hora FROM compras INNER JOIN proveedores ON compras.proveedor=proveedores.nEmpresa WHERE idCompra='"+dato+"'";
+            Statement stat = conectar().createStatement();
+            obt = stat.executeQuery(sql);
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obt;
+    }
+    
+    public byte borrarCompra(String dato){
+        byte exito=0;
+        try{
+            String sql="DELETE FROM compras WHERE idCompra="+dato;
+            PreparedStatement stat = conectar().prepareStatement(sql);
+            if(stat.executeUpdate()==1){
+                exito=1;
+            }
+        }catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return exito;
     }
 }

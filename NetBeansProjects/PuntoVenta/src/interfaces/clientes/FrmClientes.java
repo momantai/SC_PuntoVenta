@@ -55,6 +55,7 @@ public class FrmClientes extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Clientes");
         setResizable(false);
 
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
@@ -234,6 +235,7 @@ public class FrmClientes extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         DialClientes clientes = new DialClientes(id);
+        clientes.setTitle("ModificarCliente");
         if(id!=0){
             clientes.llenardatos(datospasar);
             clientes.setVisible(true);

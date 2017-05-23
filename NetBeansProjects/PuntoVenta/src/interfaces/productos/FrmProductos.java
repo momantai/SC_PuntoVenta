@@ -122,6 +122,7 @@ public class FrmProductos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Productos");
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -281,6 +282,7 @@ public class FrmProductos extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(tblProductos.getSelectedRow()>-1){
             DialNuevoProducto modi = new DialNuevoProducto(this, true);
+            modi.setTitle("Modificar Producto");
             modi.setBoton("Modificar");
             modi.darDatos((String) tblProductos.getValueAt(tblProductos.getSelectedRow(), 0));
             modi.setVisible(true);

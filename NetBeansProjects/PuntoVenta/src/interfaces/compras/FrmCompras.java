@@ -8,6 +8,8 @@ package interfaces.compras;
 import conexion.Control;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FrmCompras extends javax.swing.JFrame {
 
+    java.util.Calendar calendario = new java.util.GregorianCalendar();
     Control controla = new Control();
     private DefaultTableModel modelo= new DefaultTableModel(){
         public boolean isCellEditable(int rowIndex, int columnIndex){return false;}
@@ -25,7 +28,42 @@ public class FrmCompras extends javax.swing.JFrame {
      */
     public FrmCompras() {
         initComponents();
+        setearDias();
         llenarTabla();
+    }
+    
+    private void setearDias(){
+        for(int i=1; i<=31; i++){
+            cmbxDiaIn.addItem(i);
+        }
+        String[] meses={"ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"};
+        for(int i=0; i<=11; i++){
+            cmbxMesIn.addItem(meses[i]);
+            cmbxMesFin.addItem(meses[i]);
+        }
+        for(int i=calendario.get(calendario.YEAR); i>=2000; i--){
+            cmbxAnioIn.addItem(i);
+            cmbxAnioFin.addItem(i);
+        }
+        
+        cmbxMesFin.setSelectedIndex(calendario.get(calendario.MONTH));
+        if(calendario.get(calendario.MONTH)==2){
+            cmbxDiaFin.removeAllItems();
+            if(calendario.get(calendario.YEAR)%4==0){
+                for(int i=1; i<=29; i++){
+                    cmbxDiaFin.addItem(i);
+                }
+            }else{
+                for(int i=1; i<=28; i++){
+                    cmbxDiaFin.addItem(i);
+                }
+            }
+        }else if(calendario.get(calendario.MONTH)==4 || calendario.get(calendario.MONTH)==6 || calendario.get(calendario.MONTH)==9 || calendario.get(calendario.MONTH)==11){
+            for(int i=1; i<=30; i++){
+                cmbxDiaFin.addItem(i);
+            }
+        }
+        cmbxDiaFin.setSelectedIndex(calendario.get(calendario.DAY_OF_MONTH)-1);
     }
     private void setearModelo(){
         if(modelo.getColumnCount()==0){
@@ -72,12 +110,22 @@ public class FrmCompras extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCompras = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        cmbxDiaIn = new javax.swing.JComboBox();
+        cmbxDiaFin = new javax.swing.JComboBox();
+        cmbxMesIn = new javax.swing.JComboBox();
+        cmbxMesFin = new javax.swing.JComboBox();
+        cmbxAnioIn = new javax.swing.JComboBox();
+        cmbxAnioFin = new javax.swing.JComboBox();
+        btnReporte = new javax.swing.JButton();
+        btnMostrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Compras");
 
         tblCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -89,13 +137,58 @@ public class FrmCompras extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblCompras);
 
-        jButton1.setText("Agregar");
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Mostrar");
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Eliminar");
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Cancelar");
+        jLabel1.setText("Mostrar desde:");
+
+        jLabel2.setText("Hasta:");
+
+        cmbxDiaIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbxDiaInActionPerformed(evt);
+            }
+        });
+
+        cmbxMesIn.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                cmbxMesInFocusLost(evt);
+            }
+        });
+
+        cmbxMesFin.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                cmbxMesFinFocusLost(evt);
+            }
+        });
+
+        cmbxAnioFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbxAnioFinActionPerformed(evt);
+            }
+        });
+
+        btnReporte.setText("Reporte");
+
+        btnMostrar.setText("Mostrar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,33 +197,153 @@ public class FrmCompras extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(33, 33, 33)
-                        .addComponent(jButton2)
-                        .addGap(35, 35, 35)
-                        .addComponent(jButton3)
+                        .addComponent(btnAgregar)
+                        .addGap(61, 61, 61)
+                        .addComponent(btnMostrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
+                        .addComponent(btnEliminar)
+                        .addGap(110, 110, 110)
+                        .addComponent(btnCancelar)))
                 .addGap(26, 26, 26))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cmbxMesFin, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbxDiaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbxAnioFin, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cmbxMesIn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbxDiaIn, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbxAnioIn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(52, 52, 52)
+                .addComponent(btnReporte)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbxDiaIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(cmbxMesIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbxAnioIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbxDiaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(cmbxMesFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbxAnioFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReporte)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnAgregar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnMostrar))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void cmbxDiaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbxDiaInActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbxDiaInActionPerformed
+
+    private void cmbxAnioFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbxAnioFinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbxAnioFinActionPerformed
+
+    private void cmbxMesInFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmbxMesInFocusLost
+        // TODO add your handling code here:
+        cmbxDiaIn.removeAllItems();     
+        if(cmbxMesIn.getSelectedIndex()==1){
+            if((int) cmbxAnioIn.getSelectedItem()%4==0){
+                for(int i=1; i<=29; i++){
+                    cmbxDiaIn.addItem(i);
+                }
+            }else{
+                for(int i=1; i<=28; i++){
+                    cmbxDiaIn.addItem(i);
+                }
+            }
+        }else if(cmbxMesIn.getSelectedIndex()==3 || cmbxMesIn.getSelectedIndex()==5 || cmbxMesIn.getSelectedIndex()==8 || cmbxMesIn.getSelectedIndex()==10){
+            for(int i=1; i<=30; i++){
+                cmbxDiaIn.addItem(i);
+            }
+        }else{
+            for(int i=1; i<=31; i++){
+                cmbxDiaIn.addItem(i);
+            }
+        }
+        cmbxDiaIn.setSelectedIndex(0);
+    }//GEN-LAST:event_cmbxMesInFocusLost
+
+    private void cmbxMesFinFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmbxMesFinFocusLost
+        // TODO add your handling code here:
+        cmbxDiaFin.removeAllItems();
+        if(cmbxMesFin.getSelectedIndex()==1){
+            if((int)cmbxAnioFin.getSelectedItem()%4==0){
+                for(int i=1; i<=29; i++){
+                    cmbxDiaFin.addItem(i);
+                }
+            }else{
+                for(int i=1; i<=28; i++){
+                    cmbxDiaFin.addItem(i);
+                }
+            }
+        }else if(cmbxMesFin.getSelectedIndex()==3 || cmbxMesFin.getSelectedIndex()==5 || cmbxMesFin.getSelectedIndex()==8 || cmbxMesFin.getSelectedIndex()==10){
+            for(int i=1; i<=30; i++){
+                cmbxDiaFin.addItem(i);
+            }
+        }else{
+            for(int i=1; i<=31; i++){
+                cmbxDiaIn.addItem(i);
+            }
+        }
+        cmbxDiaFin.setSelectedIndex(0);
+    }//GEN-LAST:event_cmbxMesFinFocusLost
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        if(tblCompras.getSelectedRow()>-1){
+            if(JOptionPane.showConfirmDialog(this, "Esta seguro que desea eliminar esta compra?")==0){
+                if(controla.borrarCompra((String) tblCompras.getValueAt((int) tblCompras.getSelectedRow(), 0))==1){
+                    JOptionPane.showMessageDialog(this, "Compra Eliminada");
+                    llenarTabla();
+                }else{
+                    JOptionPane.showMessageDialog(this, "Error al actualizar");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,10 +381,19 @@ public class FrmCompras extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnMostrar;
+    private javax.swing.JButton btnReporte;
+    private javax.swing.JComboBox cmbxAnioFin;
+    private javax.swing.JComboBox cmbxAnioIn;
+    private javax.swing.JComboBox cmbxDiaFin;
+    private javax.swing.JComboBox cmbxDiaIn;
+    private javax.swing.JComboBox cmbxMesFin;
+    private javax.swing.JComboBox cmbxMesIn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCompras;
     // End of variables declaration//GEN-END:variables

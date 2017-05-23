@@ -9,6 +9,7 @@ import conexion.Control;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
+import reportes.Reporte;
 
 /**
  *
@@ -99,6 +100,11 @@ public class FrmInventario extends javax.swing.JFrame {
         });
 
         btnReporte.setText("Reporte");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -165,6 +171,13 @@ public class FrmInventario extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        // TODO add your handling code here:
+        Reporte reportar = new Reporte();
+        reportar.escribirArchivo("ReporteInventario", controla.mostrarInventario());
+        reportar.conevertirPdf("ReporteInventario");
+    }//GEN-LAST:event_btnReporteActionPerformed
 
     /**
      * @param args the command line arguments

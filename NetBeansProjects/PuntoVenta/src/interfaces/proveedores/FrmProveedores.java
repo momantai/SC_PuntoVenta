@@ -77,6 +77,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Proveedores");
 
         tblProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -164,6 +165,7 @@ public class FrmProveedores extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(tblProveedores.getSelectedRow()>-1){
             DialNuevoProv prove = new DialNuevoProv(this, true);
+            prove.setTitle("Modificar Proveedores");
             prove.darValores((String)tblProveedores.getValueAt(tblProveedores.getSelectedRow(), 0));
             prove.setLocationRelativeTo(null);
             prove.setVisible(true);

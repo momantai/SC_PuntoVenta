@@ -45,7 +45,7 @@ public class FrmLogin extends javax.swing.JFrame {
         txtPass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocation(new java.awt.Point(0, 0));
+        setTitle("Inicio de Sesion");
         setResizable(false);
 
         lblUsuario.setText("Usuario");
