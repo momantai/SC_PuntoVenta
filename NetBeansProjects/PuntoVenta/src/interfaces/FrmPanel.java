@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import interfaces.clientes.FrmClientes;
 import interfaces.cobrar.FrmCobrar;
 import interfaces.empleados.FrmEmpleados;
 import interfaces.inventario.FrmInventario;
@@ -110,6 +111,11 @@ public class FrmPanel extends javax.swing.JFrame {
         });
 
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/clientes.png"))); // NOI18N
+        btnClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClientesActionPerformed(evt);
+            }
+        });
 
         btnEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/empleados.png"))); // NOI18N
         btnEmpleados.addActionListener(new java.awt.event.ActionListener() {
@@ -329,6 +335,13 @@ public class FrmPanel extends javax.swing.JFrame {
         prover.setLocationRelativeTo(null);
         prover.setVisible(true);
     }//GEN-LAST:event_btnProveedoresActionPerformed
+
+    private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
+        // TODO add your handling code here:
+        FrmClientes cliente = new FrmClientes();
+        cliente.setLocationRelativeTo(null);
+        cliente.setVisible(true);
+    }//GEN-LAST:event_btnClientesActionPerformed
 
     /**
      * @param args the command line arguments
