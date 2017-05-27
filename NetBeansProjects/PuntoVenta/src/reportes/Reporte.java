@@ -15,7 +15,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
  * @author awelo
  */
 public class Reporte {
-    public void escribirArchivo(String nombreArchivo, ResultSet obte){
+    public void escribirArchivoInventa(String nombreArchivo, ResultSet obte){
         File fil= new File(nombreArchivo+".xhtml");
         
         
@@ -60,6 +60,99 @@ public class Reporte {
         }
     }
     
+    public void escribirArchivoCompra(String nombreArchivo, ResultSet obte){
+        File fil= new File(nombreArchivo+".xhtml");
+        
+        
+        try{
+            FileWriter escritor= new FileWriter(fil);
+            BufferedWriter bufer = new BufferedWriter(escritor);
+            PrintWriter vista = new PrintWriter(bufer);
+            vista.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+                "  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+            vista.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"es\" xml:lang=\"es\">");
+            vista.append("<head>");
+            vista.append("<title>"+nombreArchivo+"</title>");
+            vista.append("</head>");
+            vista.append("<body>");
+            vista.append("<center>");
+            vista.append("<table>");
+            vista.append("<tr>");
+            vista.append("<th>No de Compra</th>");
+            vista.append("<th>Monto</th>");
+            vista.append("<th>Proveedor</th>");
+            vista.append("<th>Fecha</th>");
+            vista.append("<th>Hora</th>");
+            vista.append("</tr>");
+            while(obte.next()){
+                vista.append("<tr>");
+                vista.append("<td>"+obte.getString(1)+"</td>");
+                vista.append("<td>"+obte.getString(2)+"</td>");
+                vista.append("<td>"+obte.getString(3)+"</td>");
+                vista.append("<td>"+obte.getString(4)+"</td>");
+                vista.append("<td>"+obte.getString(5)+"</td>");
+                vista.append("</tr>");
+            }
+            vista.append("</table>");
+            vista.append("</center>");
+            vista.append("</body>");
+            vista.append("</html>");
+            vista.close();
+            escritor.close();
+            
+        } catch(IOException e){
+            System.out.println("Error al cargar el reporte "+e);
+        } catch(SQLException e){
+            System.out.println("Error al cargar el reporte "+e);
+        }
+    }
+    
+    public void escribirArchivoVenta(String nombreArchivo, ResultSet obte){
+        File fil= new File(nombreArchivo+".xhtml");
+        
+        
+        try{
+            FileWriter escritor= new FileWriter(fil);
+            BufferedWriter bufer = new BufferedWriter(escritor);
+            PrintWriter vista = new PrintWriter(bufer);
+            vista.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+                "  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+            vista.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"es\" xml:lang=\"es\">");
+            vista.append("<head>");
+            vista.append("<title>"+nombreArchivo+"</title>");
+            vista.append("</head>");
+            vista.append("<body>");
+            vista.append("<center>");
+            vista.append("<table>");
+            vista.append("<tr>");
+            vista.append("<th>No de Venta</th>");
+            vista.append("<th>Monto</th>");
+            vista.append("<th>Proveedor</th>");
+            vista.append("<th>Fecha</th>");
+            vista.append("<th>Hora</th>");
+            vista.append("</tr>");
+            while(obte.next()){
+                vista.append("<tr>");
+                vista.append("<td>"+obte.getString(1)+"</td>");
+                vista.append("<td>"+obte.getString(2)+"</td>");
+                vista.append("<td>"+obte.getString(3)+"</td>");
+                vista.append("<td>"+obte.getString(4)+"</td>");
+                vista.append("<td>"+obte.getString(5)+"</td>");
+                vista.append("</tr>");
+            }
+            vista.append("</table>");
+            vista.append("</center>");
+            vista.append("</body>");
+            vista.append("</html>");
+            vista.close();
+            escritor.close();
+            
+        } catch(IOException e){
+            System.out.println("Error al cargar el reporte "+e);
+        } catch(SQLException e){
+            System.out.println("Error al cargar el reporte "+e);
+        }
+    }
     public void conevertirPdf(String nombreArchivo){
         try{
             File inputFile= new File(nombreArchivo+".xhtml");

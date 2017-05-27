@@ -33,7 +33,9 @@ public class DialNuevoEmpleado extends javax.swing.JDialog {
         initComponents();
         coincide=false;
     }
-    
+    public void primer(){
+        
+    }
     public void setearBoton(){
         btnAgregar.setText("Modificar");
     }

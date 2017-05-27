@@ -56,7 +56,7 @@ public class FrmProductos extends javax.swing.JFrame {
         Metodo para asignar columnas a la tabla y limpiarla para cuando se vuelva a llenar
     */
     private void setModelo(){
-        if(modelo.getColumnCount()==0){
+        if(modelo.getRowCount()==0){
             modelo.addColumn("Codigo");
             modelo.addColumn("Descripción");
             modelo.addColumn("Clasificación");
@@ -64,10 +64,10 @@ public class FrmProductos extends javax.swing.JFrame {
             modelo.addColumn("Activo");
             modelo.addColumn("Cantidad");
             modelo.addColumn("Tipo");
-        }
-        
-        while(modelo.getRowCount()!=0){
-            modelo.removeRow(modelo.getRowCount()-1);
+        }else{
+            while(modelo.getRowCount()!=0){
+                modelo.removeRow(modelo.getRowCount()-1);
+            }
         }
     }
     
@@ -75,6 +75,9 @@ public class FrmProductos extends javax.swing.JFrame {
         Metodo para llenar la tabla
     */
     public void mostrarDatos(){
+        DefaultTableModel modelo= new DefaultTableModel(){
+            public boolean isCellEditable(int rowIndex, int columnIndex){return false;}
+        };
         try{
             ResultSet obtener = cone.datosProductos();
             if(obtener!=null){
@@ -214,7 +217,7 @@ public class FrmProductos extends javax.swing.JFrame {
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                .addGap(57, 57, 57)
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
                     .addComponent(btnModificar)
@@ -276,6 +279,7 @@ public class FrmProductos extends javax.swing.JFrame {
         // TODO add your handling code here:
         DialNuevoProducto nuevo = new DialNuevoProducto(this,true);
         nuevo.setVisible(true);
+        mostrarDatos();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed

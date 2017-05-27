@@ -5,17 +5,101 @@
  */
 package interfaces.ventas;
 
+import conexion.Control;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import reportes.Reporte;
+
 /**
  *
  * @author awelo
  */
 public class FrmVentas extends javax.swing.JFrame {
 
+    java.util.Calendar calendario = new java.util.GregorianCalendar();
+    Control controla = new Control();
+    private DefaultTableModel modelo= new DefaultTableModel(){
+        public boolean isCellEditable(int rowIndex, int columnIndex){return false;}
+    };
     /**
      * Creates new form FrmVentas
      */
     public FrmVentas() {
         initComponents();
+        //setearDias();
+        llenarTabla();
+    }
+    /*private void setearDias(){
+        for(int i=1; i<=31; i++){
+            cmbxDiaIn.addItem(i);
+        }
+        String[] meses={"ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"};
+        for(int i=0; i<=11; i++){
+            cmbxMesIn.addItem(meses[i]);
+            cmbxMesFin.addItem(meses[i]);
+        }
+        for(int i=calendario.get(calendario.YEAR); i>=2000; i--){
+            cmbxAnioIn.addItem(i);
+            cmbxAnioFin.addItem(i);
+        }
+        
+        cmbxMesFin.setSelectedIndex(calendario.get(calendario.MONTH));
+        if(calendario.get(calendario.MONTH)==2){
+            cmbxDiaFin.removeAllItems();
+            if(calendario.get(calendario.YEAR)%4==0){
+                for(int i=1; i<=29; i++){
+                    cmbxDiaFin.addItem(i);
+                }
+            }else{
+                for(int i=1; i<=28; i++){
+                    cmbxDiaFin.addItem(i);
+                }
+            }
+        }else if(calendario.get(calendario.MONTH)==4 || calendario.get(calendario.MONTH)==6 || calendario.get(calendario.MONTH)==9 || calendario.get(calendario.MONTH)==11){
+            for(int i=1; i<=30; i++){
+                cmbxDiaFin.addItem(i);
+            }
+        }
+        cmbxDiaFin.setSelectedIndex(calendario.get(calendario.DAY_OF_MONTH)-1);
+    }*/
+    private void setearModelo(){
+        if(modelo.getColumnCount()==0){
+            modelo.addColumn("No Venta");
+            modelo.addColumn("Vendedor");
+            modelo.addColumn("Monto");
+            modelo.addColumn("Fecha");
+            modelo.addColumn("Hora");
+            modelo.addColumn("Estado");
+            modelo.addColumn("Cliente");
+        }
+        
+        while(modelo.getRowCount()!=0){
+            modelo.removeRow(modelo.getRowCount()-1);
+        }
+    }
+    
+    private void llenarTabla(){
+        setearModelo();
+        ResultSet obtenido=controla.mostrarVentas();
+        if(obtenido!=null){
+            try{
+                String[] datos = new String[7];
+                while(obtenido.next()){
+                    datos[0]=obtenido.getString(1);
+                    datos[1]=obtenido.getString(2);
+                    datos[2]=obtenido.getString(3);
+                    datos[3]=obtenido.getString(4);
+                    datos[4]=obtenido.getString(5);
+                    datos[5]=obtenido.getString(6);
+                    datos[6]=obtenido.getString(7);
+                    modelo.addRow(datos);
+                }
+                tblVentas.setModel(modelo);
+            } catch(SQLException e){
+                System.out.println("Error al cargar "+e);
+            }
+        }
     }
 
     /**
@@ -28,42 +112,80 @@ public class FrmVentas extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblVentas = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        btnReporte = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblVentas);
+
+        jButton1.setText("Devolucion");
+
+        jButton2.setText("Cancelar");
+
+        btnReporte.setText("Reporte");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(59, 59, 59))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnReporte)
+                .addGap(72, 72, 72))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGap(24, 24, 24)
+                .addComponent(btnReporte)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(9, 9, 9))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        // TODO add your handling code here:
+        Reporte reportar = new Reporte();
+        
+        reportar.escribirArchivoVenta("reporte", controla.mostrarVentas());
+        reportar.conevertirPdf("reporte");
+    }//GEN-LAST:event_btnReporteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -101,7 +223,10 @@ public class FrmVentas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnReporte;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblVentas;
     // End of variables declaration//GEN-END:variables
 }

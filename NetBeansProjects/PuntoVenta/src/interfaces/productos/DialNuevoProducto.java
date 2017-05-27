@@ -56,6 +56,7 @@ public class DialNuevoProducto extends javax.swing.JDialog {
         boolean vacio=false;
         for(Component prueba : panContener.getComponents()){
             if(prueba instanceof JTextField){
+                if(prueba!=txtCantidad)
                 if(((JTextField) prueba).getText().equals("")){
                     vacio=true;
                 }
@@ -358,7 +359,7 @@ public class DialNuevoProducto extends javax.swing.JDialog {
                     producto.setActivo(0);
                 }
                 
-                if(txtCantidad.equals("")){
+                if(!txtCantidad.isEnabled()){
                     producto.setCantidad(1);
                 }else{
                     producto.setCantidad(Integer.parseInt(txtCantidad.getText()));
@@ -372,6 +373,7 @@ public class DialNuevoProducto extends javax.swing.JDialog {
         
                 if(controla.registrarProductos(producto, paquete)==1){
                     JOptionPane.showMessageDialog(this, "Producto Registrado");
+                    this.dispose();
                 } else{
                     JOptionPane.showMessageDialog(this, "Error al Cargar");
                 }    
@@ -394,6 +396,7 @@ public class DialNuevoProducto extends javax.swing.JDialog {
             }
             if(controla.modificarProductos(producto, paquete)==1){
                 JOptionPane.showMessageDialog(this, "Producto Actualizado");
+                this.dispose();
             } else{
                 JOptionPane.showMessageDialog(this, "Error al Cargar");
             }

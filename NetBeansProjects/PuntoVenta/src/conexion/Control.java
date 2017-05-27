@@ -527,4 +527,15 @@ public class Control  extends Conexion{
         
         return exito;
     }
+    public ResultSet mostrarVentas(){
+        ResultSet obt= null;
+        try{
+            String sql="SELECT idVenta, empleado.nombreE, monto, fecha, hora, vendido, cliente FROM ventas INNER JOIN empleado ON ventas.idEmpleado=empleado.idEmpleado";
+            Statement stat = conectar().createStatement();
+            obt = stat.executeQuery(sql);
+        } catch(SQLException e){
+            System.out.println("Error en la conexion "+e);
+        }
+        return obt;
+    }
 }

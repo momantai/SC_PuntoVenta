@@ -6,11 +6,14 @@
 package interfaces.compras;
 
 import conexion.Control;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import reportes.Reporte;
 
 /**
  *
@@ -28,11 +31,11 @@ public class FrmCompras extends javax.swing.JFrame {
      */
     public FrmCompras() {
         initComponents();
-        setearDias();
+        //setearDias();
         llenarTabla();
     }
     
-    private void setearDias(){
+    /*private void setearDias(){
         for(int i=1; i<=31; i++){
             cmbxDiaIn.addItem(i);
         }
@@ -64,7 +67,7 @@ public class FrmCompras extends javax.swing.JFrame {
             }
         }
         cmbxDiaFin.setSelectedIndex(calendario.get(calendario.DAY_OF_MONTH)-1);
-    }
+    }*/
     private void setearModelo(){
         if(modelo.getColumnCount()==0){
             modelo.addColumn("No Compra");
@@ -113,16 +116,7 @@ public class FrmCompras extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        cmbxDiaIn = new javax.swing.JComboBox();
-        cmbxDiaFin = new javax.swing.JComboBox();
-        cmbxMesIn = new javax.swing.JComboBox();
-        cmbxMesFin = new javax.swing.JComboBox();
-        cmbxAnioIn = new javax.swing.JComboBox();
-        cmbxAnioFin = new javax.swing.JComboBox();
         btnReporte = new javax.swing.JButton();
-        btnMostrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Compras");
@@ -158,106 +152,45 @@ public class FrmCompras extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Mostrar desde:");
-
-        jLabel2.setText("Hasta:");
-
-        cmbxDiaIn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbxDiaInActionPerformed(evt);
-            }
-        });
-
-        cmbxMesIn.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                cmbxMesInFocusLost(evt);
-            }
-        });
-
-        cmbxMesFin.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                cmbxMesFinFocusLost(evt);
-            }
-        });
-
-        cmbxAnioFin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbxAnioFinActionPerformed(evt);
-            }
-        });
-
         btnReporte.setText("Reporte");
-
-        btnMostrar.setText("Mostrar");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAgregar)
-                        .addGap(61, 61, 61)
-                        .addComponent(btnMostrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEliminar)
-                        .addGap(110, 110, 110)
-                        .addComponent(btnCancelar)))
-                .addGap(26, 26, 26))
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cmbxMesFin, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbxDiaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbxAnioFin, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(48, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cmbxMesIn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbxDiaIn, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbxAnioIn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(52, 52, 52)
-                .addComponent(btnReporte)
-                .addContainerGap(74, Short.MAX_VALUE))
+                        .addComponent(btnAgregar)
+                        .addGap(117, 117, 117)
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnReporte)
+                        .addGap(56, 56, 56)
+                        .addComponent(btnCancelar)
+                        .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbxDiaIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(cmbxMesIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbxAnioIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbxDiaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(cmbxMesFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbxAnioFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnReporte)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addContainerGap(91, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnMostrar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAgregar)
+                        .addComponent(btnEliminar)
+                        .addComponent(btnCancelar))
+                    .addComponent(btnReporte))
                 .addContainerGap())
         );
 
@@ -267,64 +200,6 @@ public class FrmCompras extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAgregarActionPerformed
-
-    private void cmbxDiaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbxDiaInActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbxDiaInActionPerformed
-
-    private void cmbxAnioFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbxAnioFinActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbxAnioFinActionPerformed
-
-    private void cmbxMesInFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmbxMesInFocusLost
-        // TODO add your handling code here:
-        cmbxDiaIn.removeAllItems();     
-        if(cmbxMesIn.getSelectedIndex()==1){
-            if((int) cmbxAnioIn.getSelectedItem()%4==0){
-                for(int i=1; i<=29; i++){
-                    cmbxDiaIn.addItem(i);
-                }
-            }else{
-                for(int i=1; i<=28; i++){
-                    cmbxDiaIn.addItem(i);
-                }
-            }
-        }else if(cmbxMesIn.getSelectedIndex()==3 || cmbxMesIn.getSelectedIndex()==5 || cmbxMesIn.getSelectedIndex()==8 || cmbxMesIn.getSelectedIndex()==10){
-            for(int i=1; i<=30; i++){
-                cmbxDiaIn.addItem(i);
-            }
-        }else{
-            for(int i=1; i<=31; i++){
-                cmbxDiaIn.addItem(i);
-            }
-        }
-        cmbxDiaIn.setSelectedIndex(0);
-    }//GEN-LAST:event_cmbxMesInFocusLost
-
-    private void cmbxMesFinFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmbxMesFinFocusLost
-        // TODO add your handling code here:
-        cmbxDiaFin.removeAllItems();
-        if(cmbxMesFin.getSelectedIndex()==1){
-            if((int)cmbxAnioFin.getSelectedItem()%4==0){
-                for(int i=1; i<=29; i++){
-                    cmbxDiaFin.addItem(i);
-                }
-            }else{
-                for(int i=1; i<=28; i++){
-                    cmbxDiaFin.addItem(i);
-                }
-            }
-        }else if(cmbxMesFin.getSelectedIndex()==3 || cmbxMesFin.getSelectedIndex()==5 || cmbxMesFin.getSelectedIndex()==8 || cmbxMesFin.getSelectedIndex()==10){
-            for(int i=1; i<=30; i++){
-                cmbxDiaFin.addItem(i);
-            }
-        }else{
-            for(int i=1; i<=31; i++){
-                cmbxDiaIn.addItem(i);
-            }
-        }
-        cmbxDiaFin.setSelectedIndex(0);
-    }//GEN-LAST:event_cmbxMesFinFocusLost
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
@@ -344,6 +219,15 @@ public class FrmCompras extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        // TODO add your handling code here:
+        
+        ResultSet obte=controla.mostrarCompras();
+        Reporte reporta = new Reporte();
+        reporta.escribirArchivoCompra("reporte", obte);
+        reporta.conevertirPdf("reporte");
+    }//GEN-LAST:event_btnReporteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -384,16 +268,7 @@ public class FrmCompras extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnMostrar;
     private javax.swing.JButton btnReporte;
-    private javax.swing.JComboBox cmbxAnioFin;
-    private javax.swing.JComboBox cmbxAnioIn;
-    private javax.swing.JComboBox cmbxDiaFin;
-    private javax.swing.JComboBox cmbxDiaIn;
-    private javax.swing.JComboBox cmbxMesFin;
-    private javax.swing.JComboBox cmbxMesIn;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCompras;
     // End of variables declaration//GEN-END:variables

@@ -175,7 +175,7 @@ public class FrmInventario extends javax.swing.JFrame {
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         // TODO add your handling code here:
         Reporte reportar = new Reporte();
-        reportar.escribirArchivo("ReporteInventario", controla.mostrarInventario());
+        reportar.escribirArchivoInventa("ReporteInventario", controla.mostrarInventario());
         reportar.conevertirPdf("ReporteInventario");
     }//GEN-LAST:event_btnReporteActionPerformed
 
